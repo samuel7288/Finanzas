@@ -2642,6 +2642,205 @@ svg {
   background: #0b1221;
 }
 
+.goals-page-stack {
+  display: grid;
+  gap: 16px;
+}
+
+.goals-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 16px;
+  align-items: start;
+}
+
+.goals-main-column,
+.goals-side-column {
+  display: grid;
+  gap: 16px;
+}
+
+.goals-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.goal-metric-card {
+  min-height: 132px;
+  display: grid;
+  gap: 14px;
+}
+
+.goal-metric-progress {
+  margin-top: auto;
+}
+
+.goals-list-card,
+.goals-side-card {
+  display: grid;
+  gap: 16px;
+}
+
+.goals-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.goals-inline-filter {
+  min-width: 210px;
+}
+
+.goals-filter-button {
+  min-width: 112px;
+}
+
+.goals-list {
+  display: grid;
+  gap: 14px;
+}
+
+.goal-list-row {
+  border: 1px solid rgba(47, 59, 88, 0.72);
+  border-radius: 16px;
+  background: rgba(10, 16, 30, 0.78);
+  display: grid;
+  grid-template-columns: 106px minmax(0, 1.1fr) minmax(180px, 0.9fr) 120px minmax(220px, 0.9fr) 42px;
+  gap: 16px;
+  align-items: center;
+  padding: 12px;
+}
+
+.goal-image {
+  height: 104px;
+  border-radius: 14px;
+  border: 1px solid rgba(62, 75, 111, 0.45);
+  background-size: cover;
+  background-position: center;
+}
+
+.goal-travel {
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.18)),
+    linear-gradient(180deg, #8ed4ff 0 34%, #b6ecff 34% 58%, #42c7cb 58% 100%);
+}
+
+.goal-personal {
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.2)),
+    linear-gradient(135deg, #f0e5d6, #8a5d39 64%, #1a1d25);
+}
+
+.goal-home {
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.12)),
+    linear-gradient(180deg, #9bd4ff 0 38%, #d9edf8 38% 56%, #6d8d52 56% 100%);
+}
+
+.goal-education {
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.18)),
+    linear-gradient(135deg, #f3e9d5, #826d4a 58%, #171a21);
+}
+
+.goal-savings {
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.2)),
+    linear-gradient(135deg, #101724, #1c2d4d 50%, #4b0c15);
+}
+
+.goal-list-copy strong,
+.goal-list-amount strong,
+.goal-list-progress strong {
+  display: block;
+}
+
+.goal-list-copy span,
+.goal-list-amount span,
+.goal-list-progress span,
+.goal-list-meta span {
+  color: #8fa0c1;
+}
+
+.goal-list-copy span {
+  color: #8f7cff;
+}
+
+.goal-list-amount {
+  display: grid;
+  gap: 8px;
+}
+
+.goal-list-progress {
+  text-align: center;
+}
+
+.goal-list-meta {
+  border: 1px solid rgba(47, 59, 88, 0.72);
+  border-radius: 14px;
+  background: rgba(12, 18, 31, 0.7);
+  padding: 14px 16px;
+  display: grid;
+  gap: 14px;
+}
+
+.goal-list-meta strong {
+  display: block;
+  margin-top: 4px;
+}
+
+.goal-summary-stack {
+  display: grid;
+  gap: 16px;
+}
+
+.goal-summary-list {
+  display: grid;
+  gap: 12px;
+}
+
+.goal-summary-footer {
+  padding-top: 14px;
+  border-top: 1px solid rgba(47, 59, 88, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.goal-summary-footer span {
+  color: #8fa0c1;
+}
+
+.goals-side-list {
+  display: grid;
+  gap: 12px;
+}
+
+.goals-side-row {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.goal-progress-accent {
+  color: #2fd39b;
+}
+
+.goals-recommendation {
+  display: grid;
+  gap: 14px;
+}
+
+.goals-recommendation p {
+  margin: 0;
+  color: #aab7d3;
+  line-height: 1.55;
+}
+
 .settings-page-stack {
   display: grid;
   gap: 16px;
@@ -3198,7 +3397,8 @@ svg {
   .budgets-layout,
   .budget-chart-layout,
   .reports-primary-grid,
-  .reports-secondary-grid {
+  .reports-secondary-grid,
+  .goals-layout {
     grid-template-columns: 1fr;
   }
 
@@ -3207,6 +3407,10 @@ svg {
   }
 
   .reports-metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .goals-metrics-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -3220,6 +3424,10 @@ svg {
 
   .settings-profile-grid {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .goal-list-row {
+    grid-template-columns: 1fr;
   }
 
   .settings-avatar-column {
@@ -3314,6 +3522,7 @@ svg {
   .settings-profile-grid,
   .budgets-metrics-grid,
   .reports-metrics-grid,
+  .goals-metrics-grid,
   .settings-wide-row,
   .settings-security-row,
   .settings-list-row,
@@ -3324,7 +3533,9 @@ svg {
 
   .report-average-row,
   .report-savings-rate,
-  .report-annual-list div {
+  .report-annual-list div,
+  .goal-summary-footer,
+  .goals-side-row {
     grid-template-columns: 1fr;
     display: grid;
   }

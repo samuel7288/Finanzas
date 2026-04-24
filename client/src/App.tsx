@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { AppLayout } from "./components/AppLayout";
 import { BudgetsPage } from "./components/BudgetsPage";
 import { GmailPage } from "./components/GmailPage";
+import { GoalsPage } from "./components/GoalsPage";
 import { LoginScreen } from "./components/LoginScreen";
 import { PlaceholderPage } from "./components/PlaceholderPage";
 import { ReportsPage } from "./components/ReportsPage";
@@ -12,6 +13,7 @@ import {
   buildAppShellModel,
   buildBudgetsPageModel,
   buildGmailPageModel,
+  buildGoalsPageModel,
   buildReportsPageModel,
   buildSettingsPageModel,
   buildSummaryModel,
@@ -62,6 +64,7 @@ function App() {
     [gmailStatus]
   );
   const budgetsPageModel = useMemo(() => buildBudgetsPageModel(), []);
+  const goalsPageModel = useMemo(() => buildGoalsPageModel(), []);
   const reportsPageModel = useMemo(
     () => buildReportsPageModel(displayTransactions),
     [displayTransactions]
@@ -301,6 +304,11 @@ function App() {
       ) : currentRoute === "reports" ? (
         <ReportsPage
           model={reportsPageModel}
+          loading={loading}
+        />
+      ) : currentRoute === "goals" ? (
+        <GoalsPage
+          model={goalsPageModel}
           loading={loading}
         />
       ) : (

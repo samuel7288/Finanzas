@@ -30,6 +30,15 @@ export type ReportTabId =
   | "accounts"
   | "comparisons"
   | "trends";
+export type GoalCategoryTabId =
+  | "all"
+  | "savings"
+  | "debt"
+  | "investment"
+  | "travel"
+  | "education"
+  | "home"
+  | "custom";
 
 export interface Transaction {
   id: string;
@@ -503,4 +512,63 @@ export interface ReportsPageModel {
   trendPoints: ReportTrendPointData[];
   averageCategories: ReportAverageCategoryData[];
   annualSummary: ReportAnnualSummaryData;
+}
+
+export interface GoalCategoryTabData {
+  id: GoalCategoryTabId;
+  label: string;
+}
+
+export interface GoalMetricData {
+  id: string;
+  label: string;
+  value: string;
+  helper: string;
+  icon: string;
+  accent: string;
+  progress?: number;
+}
+
+export interface GoalRowData {
+  id: string;
+  title: string;
+  category: string;
+  categoryLabel: string;
+  amountSavedLabel: string;
+  targetLabel: string;
+  progress: number;
+  progressLabel: string;
+  monthlyContributionLabel: string;
+  dueDateLabel: string;
+  imageTone: "travel" | "personal" | "home" | "education" | "savings";
+}
+
+export interface GoalSummarySliceData {
+  id: string;
+  label: string;
+  amountLabel: string;
+  percentageLabel: string;
+  color: string;
+  value: number;
+}
+
+export interface UpcomingGoalData {
+  id: string;
+  title: string;
+  subtitle: string;
+  progressLabel: string;
+  tone: string;
+}
+
+export interface GoalsPageModel {
+  tabs: GoalCategoryTabData[];
+  metrics: GoalMetricData[];
+  rows: GoalRowData[];
+  summarySlices: GoalSummarySliceData[];
+  upcomingGoals: UpcomingGoalData[];
+  recommendation: {
+    title: string;
+    description: string;
+    ctaLabel: string;
+  };
 }

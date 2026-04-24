@@ -17,11 +17,17 @@ import {
   GmailRowData,
   GmailStatus,
   GoalItemData,
+  GoalCategoryTabData,
+  GoalMetricData,
+  GoalRowData,
+  GoalsPageModel,
+  GoalSummarySliceData,
   InsightCardData,
   LinkedAccountData,
   MetricCardData,
   NavItem,
   NotificationPreferenceData,
+  UpcomingGoalData,
   RecentTransactionData,
   ReportAverageCategoryData,
   ReportCategoryData,
@@ -507,6 +513,85 @@ const reportTrendPoints: ReportTrendPointData[] = [
   { id: "may", label: "May 2024", value: 16700, movingAverage: 15950 }
 ];
 
+const goalsTabs: GoalCategoryTabData[] = [
+  { id: "all", label: "Todas" },
+  { id: "savings", label: "Ahorro" },
+  { id: "debt", label: "Deuda" },
+  { id: "investment", label: "Inversion" },
+  { id: "travel", label: "Viajes" },
+  { id: "education", label: "Educacion" },
+  { id: "home", label: "Casa" },
+  { id: "custom", label: "Personalizadas" }
+];
+
+const goalsSeed: Array<{
+  id: string;
+  title: string;
+  category: string;
+  categoryLabel: string;
+  saved: number;
+  target: number;
+  monthlyContribution: number;
+  dueDateLabel: string;
+  imageTone: GoalRowData["imageTone"];
+}> = [
+  {
+    id: "cancun",
+    title: "Viaje a Cancun",
+    category: "travel",
+    categoryLabel: "Viajes",
+    saved: 8200,
+    target: 15000,
+    monthlyContribution: 1500,
+    dueDateLabel: "30 Nov 2024",
+    imageTone: "travel"
+  },
+  {
+    id: "laptop",
+    title: "Nueva Laptop",
+    category: "custom",
+    categoryLabel: "Personal",
+    saved: 6350,
+    target: 20000,
+    monthlyContribution: 2000,
+    dueDateLabel: "15 Jul 2025",
+    imageTone: "personal"
+  },
+  {
+    id: "home",
+    title: "Fondo para Casa",
+    category: "home",
+    categoryLabel: "Casa",
+    saved: 7800,
+    target: 25000,
+    monthlyContribution: 2500,
+    dueDateLabel: "01 Dic 2026",
+    imageTone: "home"
+  },
+  {
+    id: "masters",
+    title: "Maestria",
+    category: "education",
+    categoryLabel: "Educacion",
+    saved: 2500,
+    target: 10000,
+    monthlyContribution: 800,
+    dueDateLabel: "10 Ago 2025",
+    imageTone: "education"
+  },
+  {
+    id: "emergency",
+    title: "Fondo de Emergencia",
+    category: "savings",
+    categoryLabel: "Ahorro",
+    saved: 0,
+    target: 5000,
+    monthlyContribution: 500,
+    dueDateLabel: "Sin fecha",
+    imageTone: "savings"
+  }
+];
+
 const balanceSeries = [8, 14, 13, 26, 24, 38, 40, 48, 50, 55, 46, 44, 53, 51, 56, 58, 62, 78, 82, 95];
 
 const seededCategories: CategoryItemData[] = [
@@ -957,6 +1042,131 @@ export function buildReportsPageModel(
   };
 }
 
+export function buildGoalsPageModel(): GoalsPageModel {
+  const rows = goalsSeed.map((goal) => buildGoalRow(goal));
+  const totalSaved = goalsSeed.reduce((sum, goal) => sum + goal.saved, 0);
+  const totalTarget = goalsSeed.reduce((sum, goal) => sum + goal.target, 0);
+  const totalContribution = goalsSeed.reduce((sum, goal) => sum + goal.monthlyContribution, 0);
+  const averageProgress = rows.reduce((sum, row) => sum + row.progress, 0) / rows.length;
+
+  const metrics: GoalMetricData[] = [
+    {
+      id: "total",
+      label: "Total en metas",
+      value: formatMoney(totalSaved, "USD"),
+      helper: `De ${formatMoney(totalTarget, "USD")}`,
+      icon: "goals",
+      accent: "#a36dff",
+      progress: totalSaved / totalTarget
+    },
+    {
+      id: "progress",
+      label: "Progreso promedio",
+      value: `${Math.round(averageProgress * 100)}%`,
+      helper: "Todas tus metas",
+      icon: "investments",
+      accent: "#2f6ef9"
+    },
+    {
+      id: "saved",
+      label: "Monto ahorrado",
+      value: formatMoney(totalSaved, "USD"),
+      helper: "Este mes",
+      icon: "bag",
+      accent: "#2ed39b"
+    },
+    {
+      id: "monthly",
+      label: "Aportacion mensual",
+      value: formatMoney(totalContribution, "USD"),
+      helper: "Total programado",
+      icon: "calendar",
+      accent: "#f2a93b"
+    }
+  ];
+
+  const summarySlices: GoalSummarySliceData[] = [
+    {
+      id: "travel",
+      label: "Viajes",
+      amountLabel: formatMoney(8200, "USD"),
+      percentageLabel: "33%",
+      color: "#7b4dff",
+      value: 8200
+    },
+    {
+      id: "personal",
+      label: "Personal",
+      amountLabel: formatMoney(6350, "USD"),
+      percentageLabel: "26%",
+      color: "#2f6ef9",
+      value: 6350
+    },
+    {
+      id: "home",
+      label: "Casa",
+      amountLabel: formatMoney(7800, "USD"),
+      percentageLabel: "31%",
+      color: "#34c97e",
+      value: 7800
+    },
+    {
+      id: "education",
+      label: "Educacion",
+      amountLabel: formatMoney(2500, "USD"),
+      percentageLabel: "10%",
+      color: "#f7a53b",
+      value: 2500
+    },
+    {
+      id: "savings",
+      label: "Ahorro",
+      amountLabel: formatMoney(0, "USD"),
+      percentageLabel: "0%",
+      color: "#e05a7a",
+      value: 0
+    }
+  ];
+
+  const upcomingGoals: UpcomingGoalData[] = [
+    {
+      id: "upcoming-cancun",
+      title: "Viaje a Cancun",
+      subtitle: "Faltan 6 meses",
+      progressLabel: "54%",
+      tone: "tone-purple"
+    },
+    {
+      id: "upcoming-home",
+      title: "Fondo para Casa",
+      subtitle: "Faltan 2 anos",
+      progressLabel: "31%",
+      tone: "tone-green"
+    },
+    {
+      id: "upcoming-laptop",
+      title: "Nueva Laptop",
+      subtitle: "Falta 1 ano",
+      progressLabel: "32%",
+      tone: "tone-blue"
+    }
+  ];
+
+  return {
+    tabs: goalsTabs,
+    metrics,
+    rows,
+    summarySlices,
+    upcomingGoals,
+    recommendation: {
+      title: "Consejos para alcanzar tus metas",
+      description:
+        "Si aumentas tu aportacion mensual en $300.00, podrias alcanzar todas tus metas 2 meses antes.",
+      ctaLabel: "Ver recomendaciones"
+    }
+  };
+}
+
 function buildReviewItems(transactions: Transaction[]): ReviewItemData[] {
   return transactions
     .filter((transaction) => transaction.source === "gmail" && transaction.status === "pending")
@@ -1175,6 +1385,34 @@ function buildAverageCategorySeries(
       value: Number((item.value / 30).toFixed(2)),
       valueLabel: formatMoney(item.value / 30, "USD")
     }));
+}
+
+function buildGoalRow(item: {
+  id: string;
+  title: string;
+  category: string;
+  categoryLabel: string;
+  saved: number;
+  target: number;
+  monthlyContribution: number;
+  dueDateLabel: string;
+  imageTone: GoalRowData["imageTone"];
+}): GoalRowData {
+  const progress = item.target === 0 ? 0 : item.saved / item.target;
+
+  return {
+    id: item.id,
+    title: item.title,
+    category: item.category,
+    categoryLabel: item.categoryLabel,
+    amountSavedLabel: formatMoney(item.saved, "USD"),
+    targetLabel: formatMoney(item.target, "USD"),
+    progress,
+    progressLabel: `${Math.round(progress * 100)}%`,
+    monthlyContributionLabel: formatMoney(item.monthlyContribution, "USD"),
+    dueDateLabel: item.dueDateLabel,
+    imageTone: item.imageTone
+  };
 }
 
 function createTransaction(
