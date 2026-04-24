@@ -31,6 +31,14 @@ import {
   GoalsPageModel,
   GoalSummarySliceData,
   InsightCardData,
+  InvestmentContributionItemData,
+  InvestmentDistributionSliceData,
+  InvestmentMetricData,
+  InvestmentPerformanceItemData,
+  InvestmentPointData,
+  InvestmentPositionData,
+  InvestmentsPageModel,
+  InvestmentTabData,
   LinkedAccountData,
   MetricCardData,
   NavItem,
@@ -618,6 +626,15 @@ const accountConnections: AccountConnectionData[] = [
   { id: "extra", badgeLabel: "+2", tone: "tone-muted" }
 ];
 
+const investmentTabs: InvestmentTabData[] = [
+  { id: "overview", label: "Resumen" },
+  { id: "portfolio", label: "Portafolio" },
+  { id: "assets", label: "Activos" },
+  { id: "movements", label: "Movimientos" },
+  { id: "performance", label: "Rendimiento" },
+  { id: "objectives", label: "Objetivos" }
+];
+
 const accountsSeed: Array<{
   id: string;
   name: string;
@@ -856,6 +873,235 @@ const accountsSeed: Array<{
       { label: "Moneda", value: "USD" },
       { label: "Ultima actualizacion", value: "Hoy, 8:40 AM" }
     ]
+  }
+];
+
+const investmentPortfolioPoints: InvestmentPointData[] = [
+  { id: "p1", label: "24 Feb", value: 72000 },
+  { id: "p2", label: "10 Mar", value: 93500 },
+  { id: "p3", label: "24 Mar", value: 99500 },
+  { id: "p4", label: "7 Abr", value: 90520 },
+  { id: "p5", label: "21 Abr", value: 101240 },
+  { id: "p6", label: "5 May", value: 109820 },
+  { id: "p7", label: "19 May", value: 121340.2 },
+  { id: "p8", label: "31 May", value: 125430.75 }
+];
+
+const investmentsSeed: Array<{
+  id: string;
+  name: string;
+  symbol: string;
+  typeLabel: string;
+  accountLabel: string;
+  accountTone: string;
+  quantity: number;
+  averagePrice: number;
+  currentValue: number;
+  returnValue: number;
+  returnPercent: number;
+  portfolioSharePercent: number;
+  badgeLabel: string;
+  badgeTone: string;
+  detail: {
+    statusLabel: string;
+    statusTone: InvestmentPositionData["detail"]["statusTone"];
+    currentPrice: number;
+    updatedAtLabel: string;
+    historyPoints: InvestmentPointData[];
+    noteLines: string[];
+  };
+}> = [
+  {
+    id: "apple",
+    name: "Apple Inc.",
+    symbol: "AAPL",
+    typeLabel: "Accion",
+    accountLabel: "GBM+",
+    accountTone: "tone-purple",
+    quantity: 120,
+    averagePrice: 125,
+    currentValue: 18265.4,
+    returnValue: 3265.4,
+    returnPercent: 21.78,
+    portfolioSharePercent: 14.56,
+    badgeLabel: "A",
+    badgeTone: "tone-apple",
+    detail: {
+      statusLabel: "En cartera",
+      statusTone: "success",
+      currentPrice: 152.21,
+      updatedAtLabel: "Hoy, 9:30 AM",
+      historyPoints: [
+        { id: "a1", label: "Feb 24", value: 102 },
+        { id: "a2", label: "Mar 24", value: 126 },
+        { id: "a3", label: "Abr 24", value: 138 },
+        { id: "a4", label: "May 24", value: 152 }
+      ],
+      noteLines: [
+        "Empresa lider en tecnologia y servicios.",
+        "Posicion a largo plazo."
+      ]
+    }
+  },
+  {
+    id: "microsoft",
+    name: "Microsoft Corp.",
+    symbol: "MSFT",
+    typeLabel: "Accion",
+    accountLabel: "GBM+",
+    accountTone: "tone-purple",
+    quantity: 80,
+    averagePrice: 280.5,
+    currentValue: 25124.8,
+    returnValue: 1852.8,
+    returnPercent: 7.95,
+    portfolioSharePercent: 20.03,
+    badgeLabel: "M",
+    badgeTone: "tone-microsoft",
+    detail: {
+      statusLabel: "En cartera",
+      statusTone: "success",
+      currentPrice: 314.06,
+      updatedAtLabel: "Hoy, 9:28 AM",
+      historyPoints: [
+        { id: "m1", label: "Feb 24", value: 268 },
+        { id: "m2", label: "Mar 24", value: 289 },
+        { id: "m3", label: "Abr 24", value: 301 },
+        { id: "m4", label: "May 24", value: 314 }
+      ],
+      noteLines: [
+        "Base fuerte en software y nube.",
+        "Buen equilibrio entre crecimiento y estabilidad."
+      ]
+    }
+  },
+  {
+    id: "voo",
+    name: "Vanguard S&P 500",
+    symbol: "VOO",
+    typeLabel: "ETF",
+    accountLabel: "Interactive Brokers",
+    accountTone: "tone-blue",
+    quantity: 50,
+    averagePrice: 410.2,
+    currentValue: 20510,
+    returnValue: 2210,
+    returnPercent: 12.07,
+    portfolioSharePercent: 16.36,
+    badgeLabel: "V",
+    badgeTone: "tone-vanguard",
+    detail: {
+      statusLabel: "En cartera",
+      statusTone: "success",
+      currentPrice: 410.2,
+      updatedAtLabel: "Hoy, 9:20 AM",
+      historyPoints: [
+        { id: "v1", label: "Feb 24", value: 372 },
+        { id: "v2", label: "Mar 24", value: 389 },
+        { id: "v3", label: "Abr 24", value: 401 },
+        { id: "v4", label: "May 24", value: 410 }
+      ],
+      noteLines: [
+        "Exposicion amplia al mercado de EE. UU.",
+        "Pieza base del portafolio."
+      ]
+    }
+  },
+  {
+    id: "iwda",
+    name: "iShares Core MSCI World",
+    symbol: "IWDA",
+    typeLabel: "ETF",
+    accountLabel: "Interactive Brokers",
+    accountTone: "tone-blue",
+    quantity: 70,
+    averagePrice: 85.3,
+    currentValue: 11886.7,
+    returnValue: 1086.7,
+    returnPercent: 10.06,
+    portfolioSharePercent: 9.47,
+    badgeLabel: "I",
+    badgeTone: "tone-ishares",
+    detail: {
+      statusLabel: "En cartera",
+      statusTone: "success",
+      currentPrice: 169.81,
+      updatedAtLabel: "Hoy, 9:18 AM",
+      historyPoints: [
+        { id: "i1", label: "Feb 24", value: 141 },
+        { id: "i2", label: "Mar 24", value: 152 },
+        { id: "i3", label: "Abr 24", value: 161 },
+        { id: "i4", label: "May 24", value: 169.81 }
+      ],
+      noteLines: [
+        "ETF global para diversificacion geografica.",
+        "Mantener con rebalanceos trimestrales."
+      ]
+    }
+  },
+  {
+    id: "treasury",
+    name: "Tesoro USA 2027",
+    symbol: "US2027",
+    typeLabel: "Renta fija",
+    accountLabel: "GBM+",
+    accountTone: "tone-purple",
+    quantity: 30,
+    averagePrice: 1000,
+    currentValue: 10245.3,
+    returnValue: 245.3,
+    returnPercent: 2.45,
+    portfolioSharePercent: 8.17,
+    badgeLabel: "T",
+    badgeTone: "tone-treasury",
+    detail: {
+      statusLabel: "En cartera",
+      statusTone: "success",
+      currentPrice: 341.51,
+      updatedAtLabel: "Hoy, 9:14 AM",
+      historyPoints: [
+        { id: "t1", label: "Feb 24", value: 330 },
+        { id: "t2", label: "Mar 24", value: 334 },
+        { id: "t3", label: "Abr 24", value: 338 },
+        { id: "t4", label: "May 24", value: 341.51 }
+      ],
+      noteLines: [
+        "Posicion defensiva de menor volatilidad.",
+        "Pensada para equilibrio del portafolio."
+      ]
+    }
+  },
+  {
+    id: "bitcoin",
+    name: "Bitcoin",
+    symbol: "BTC",
+    typeLabel: "Cripto",
+    accountLabel: "Binance",
+    accountTone: "tone-gold",
+    quantity: 0.15,
+    averagePrice: 41000,
+    currentValue: 6152.95,
+    returnValue: -347.05,
+    returnPercent: -5.34,
+    portfolioSharePercent: 4.9,
+    badgeLabel: "B",
+    badgeTone: "tone-bitcoin",
+    detail: {
+      statusLabel: "Volatil",
+      statusTone: "warning",
+      currentPrice: 41019.67,
+      updatedAtLabel: "Hoy, 9:12 AM",
+      historyPoints: [
+        { id: "b1", label: "Feb 24", value: 38000 },
+        { id: "b2", label: "Mar 24", value: 43200 },
+        { id: "b3", label: "Abr 24", value: 40210 },
+        { id: "b4", label: "May 24", value: 41019.67 }
+      ],
+      noteLines: [
+        "Exposicion pequena por perfil de riesgo.",
+        "Mantener limite acotado dentro del portafolio."
+      ]
+    }
   }
 ];
 
@@ -1533,6 +1779,227 @@ export function buildAccountsPageModel(): AccountsPageModel {
     ],
     distribution,
     connections: accountConnections
+  };
+}
+
+export function buildInvestmentsPageModel(): InvestmentsPageModel {
+  const totalInvested = 125430.75;
+  const totalReturn = 18542.35;
+  const monthReturn = 2450.8;
+  const totalReturnPercent = 17.34;
+
+  const metrics: InvestmentMetricData[] = [
+    {
+      id: "total",
+      label: "Valor total invertido",
+      value: formatMoney(totalInvested, "USD"),
+      helper: "Actualizado hoy, 9:30 AM",
+      icon: "summary",
+      accent: "#7d4dff"
+    },
+    {
+      id: "return",
+      label: "Rendimiento total",
+      value: formatMoney(totalReturn, "USD"),
+      helper: "",
+      trendLabel: "17.34%",
+      trendPositive: true,
+      icon: "investments",
+      accent: "#2ed39b"
+    },
+    {
+      id: "month",
+      label: "Ganancia / Perdida del mes",
+      value: formatMoney(monthReturn, "USD"),
+      helper: "",
+      trendLabel: "2.01%",
+      trendPositive: true,
+      icon: "income",
+      accent: "#2f9cff"
+    },
+    {
+      id: "percentage",
+      label: "Rendimiento porcentual",
+      value: `${totalReturnPercent.toFixed(2)}%`,
+      helper: "Total del portafolio",
+      icon: "reports",
+      accent: "#f2a93b"
+    },
+    {
+      id: "accounts",
+      label: "Portafolios / cuentas",
+      value: "3",
+      helper: "Activas",
+      icon: "accounts",
+      accent: "#9a79ff"
+    }
+  ];
+
+  const positions: InvestmentPositionData[] = investmentsSeed.map((investment) => {
+    const quantityLabel = investment.quantity >= 1
+      ? `${investment.quantity}`
+      : investment.quantity.toFixed(2);
+    const averagePriceLabel = formatMoney(investment.averagePrice, "USD");
+    const currentPriceLabel = formatMoney(investment.detail.currentPrice, "USD");
+
+    return {
+      id: investment.id,
+      name: investment.name,
+      symbol: investment.symbol,
+      typeLabel: investment.typeLabel,
+      accountLabel: investment.accountLabel,
+      accountTone: investment.accountTone,
+      quantityLabel,
+      averagePriceLabel,
+      currentValueLabel: formatMoney(investment.currentValue, "USD"),
+      returnLabel: formatSignedAmount(
+        Math.abs(investment.returnValue),
+        "USD",
+        investment.returnValue >= 0
+      ),
+      returnPercentLabel: `(${investment.returnPercent.toFixed(2)}%)`,
+      returnPositive: investment.returnValue >= 0,
+      portfolioShareLabel: `${investment.portfolioSharePercent.toFixed(2)}%`,
+      badgeLabel: investment.badgeLabel,
+      badgeTone: investment.badgeTone,
+      detail: {
+        statusLabel: investment.detail.statusLabel,
+        statusTone: investment.detail.statusTone,
+        totalValueLabel: formatMoney(investment.currentValue, "USD"),
+        totalReturnLabel: formatSignedAmount(
+          Math.abs(investment.returnValue),
+          "USD",
+          investment.returnValue >= 0
+        ),
+        totalReturnPercentLabel: `(${investment.returnPercent.toFixed(2)}%)`,
+        totalReturnPositive: investment.returnValue >= 0,
+        quantityLabel,
+        averagePriceLabel,
+        currentPriceLabel,
+        portfolioShareLabel: `${investment.portfolioSharePercent.toFixed(2)}%`,
+        accountLabel: investment.accountLabel,
+        updatedAtLabel: investment.detail.updatedAtLabel,
+        historyPoints: investment.detail.historyPoints,
+        noteLines: investment.detail.noteLines
+      }
+    };
+  });
+
+  const distribution: InvestmentDistributionSliceData[] = [
+    {
+      id: "stocks",
+      label: "Acciones",
+      amountLabel: formatMoney(56671.45, "USD"),
+      percentageLabel: "45.2%",
+      color: "#6d48ff",
+      value: 56671.45
+    },
+    {
+      id: "etfs",
+      label: "ETFs",
+      amountLabel: formatMoney(25210.9, "USD"),
+      percentageLabel: "20.1%",
+      color: "#2f6ef9",
+      value: 25210.9
+    },
+    {
+      id: "fixed",
+      label: "Renta fija",
+      amountLabel: formatMoney(19170.5, "USD"),
+      percentageLabel: "15.3%",
+      color: "#34c97e",
+      value: 19170.5
+    },
+    {
+      id: "funds",
+      label: "Fondos",
+      amountLabel: formatMoney(12785.2, "USD"),
+      percentageLabel: "10.2%",
+      color: "#ffb347",
+      value: 12785.2
+    },
+    {
+      id: "cash",
+      label: "Efectivo",
+      amountLabel: formatMoney(11592.7, "USD"),
+      percentageLabel: "9.2%",
+      color: "#7f8fa9",
+      value: 11592.7
+    }
+  ];
+
+  const bestPerformers: InvestmentPerformanceItemData[] = [
+    { id: "best-apple", label: "Apple Inc.", symbol: "AAPL", metricLabel: "+21.78%", positive: true },
+    { id: "best-iwda", label: "iShares Core MSCI World", symbol: "IWDA", metricLabel: "+10.06%", positive: true },
+    { id: "best-msft", label: "Microsoft Corp.", symbol: "MSFT", metricLabel: "+7.95%", positive: true }
+  ];
+
+  const worstPerformers: InvestmentPerformanceItemData[] = [
+    { id: "worst-btc", label: "Bitcoin", symbol: "BTC", metricLabel: "-5.34%", positive: false },
+    { id: "worst-eth", label: "Ethereum", symbol: "ETH", metricLabel: "-3.21%", positive: false },
+    { id: "worst-tsla", label: "Tesla Inc.", symbol: "TSLA", metricLabel: "-1.82%", positive: false }
+  ];
+
+  const upcomingIncome = [
+    {
+      id: "income-aapl",
+      label: "Apple Inc.",
+      symbol: "AAPL",
+      dateLabel: "15 Jun 2024",
+      amountLabel: formatMoney(148.2, "USD")
+    },
+    {
+      id: "income-msft",
+      label: "Microsoft Corp.",
+      symbol: "MSFT",
+      dateLabel: "20 Jun 2024",
+      amountLabel: formatMoney(89.6, "USD")
+    },
+    {
+      id: "income-voo",
+      label: "Vanguard S&P 500",
+      symbol: "VOO",
+      dateLabel: "30 Jun 2024",
+      amountLabel: formatMoney(62.35, "USD")
+    }
+  ];
+
+  const contributions: InvestmentContributionItemData[] = [
+    {
+      id: "contribution-1",
+      label: "Aporte a portafolio",
+      dateLabel: "10 May 2024",
+      amountLabel: formatSignedAmount(1500, "USD", true),
+      positive: true
+    },
+    {
+      id: "contribution-2",
+      label: "Aporte a portafolio",
+      dateLabel: "25 Abr 2024",
+      amountLabel: formatSignedAmount(1000, "USD", true),
+      positive: true
+    },
+    {
+      id: "contribution-3",
+      label: "Aporte a portafolio",
+      dateLabel: "10 Abr 2024",
+      amountLabel: formatSignedAmount(1200, "USD", true),
+      positive: true
+    }
+  ];
+
+  return {
+    tabs: investmentTabs,
+    accountOptions: ["Todas las cuentas", "GBM+", "Interactive Brokers", "Binance"],
+    typeOptions: ["Todos los tipos", "Accion", "ETF", "Renta fija", "Cripto"],
+    metrics,
+    portfolioPoints: investmentPortfolioPoints,
+    distribution,
+    positions,
+    bestPerformers,
+    worstPerformers,
+    upcomingIncome,
+    contributions
   };
 }
 

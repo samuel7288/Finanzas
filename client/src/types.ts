@@ -48,6 +48,13 @@ export type AccountTabId =
   | "loans"
   | "connections";
 export type AccountKind = "bank" | "card" | "cash" | "investment" | "loan";
+export type InvestmentTabId =
+  | "overview"
+  | "portfolio"
+  | "assets"
+  | "movements"
+  | "performance"
+  | "objectives";
 
 export interface Transaction {
   id: string;
@@ -653,4 +660,107 @@ export interface AccountsPageModel {
   typeOptions: string[];
   distribution: AccountDistributionSliceData[];
   connections: AccountConnectionData[];
+}
+
+export interface InvestmentTabData {
+  id: InvestmentTabId;
+  label: string;
+}
+
+export interface InvestmentMetricData {
+  id: string;
+  label: string;
+  value: string;
+  helper: string;
+  trendLabel?: string;
+  trendPositive?: boolean;
+  icon: string;
+  accent: string;
+}
+
+export interface InvestmentPointData {
+  id: string;
+  label: string;
+  value: number;
+}
+
+export interface InvestmentDistributionSliceData {
+  id: string;
+  label: string;
+  amountLabel: string;
+  percentageLabel: string;
+  color: string;
+  value: number;
+}
+
+export interface InvestmentPositionData {
+  id: string;
+  name: string;
+  symbol: string;
+  typeLabel: string;
+  accountLabel: string;
+  accountTone: string;
+  quantityLabel: string;
+  averagePriceLabel: string;
+  currentValueLabel: string;
+  returnLabel: string;
+  returnPercentLabel: string;
+  returnPositive: boolean;
+  portfolioShareLabel: string;
+  badgeLabel: string;
+  badgeTone: string;
+  detail: {
+    statusLabel: string;
+    statusTone: "success" | "warning" | "muted";
+    totalValueLabel: string;
+    totalReturnLabel: string;
+    totalReturnPercentLabel: string;
+    totalReturnPositive: boolean;
+    quantityLabel: string;
+    averagePriceLabel: string;
+    currentPriceLabel: string;
+    portfolioShareLabel: string;
+    accountLabel: string;
+    updatedAtLabel: string;
+    historyPoints: InvestmentPointData[];
+    noteLines: string[];
+  };
+}
+
+export interface InvestmentPerformanceItemData {
+  id: string;
+  label: string;
+  symbol: string;
+  metricLabel: string;
+  positive: boolean;
+}
+
+export interface InvestmentIncomeItemData {
+  id: string;
+  label: string;
+  symbol: string;
+  dateLabel: string;
+  amountLabel: string;
+}
+
+export interface InvestmentContributionItemData {
+  id: string;
+  label: string;
+  dateLabel: string;
+  amountLabel: string;
+  positive: boolean;
+}
+
+export interface InvestmentsPageModel {
+  tabs: InvestmentTabData[];
+  accountOptions: string[];
+  typeOptions: string[];
+  metrics: InvestmentMetricData[];
+  portfolioPoints: InvestmentPointData[];
+  distribution: InvestmentDistributionSliceData[];
+  positions: InvestmentPositionData[];
+  bestPerformers: InvestmentPerformanceItemData[];
+  worstPerformers: InvestmentPerformanceItemData[];
+  upcomingIncome: InvestmentIncomeItemData[];
+  contributions: InvestmentContributionItemData[];
 }

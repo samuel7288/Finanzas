@@ -4,6 +4,7 @@ import { AppLayout } from "./components/AppLayout";
 import { BudgetsPage } from "./components/BudgetsPage";
 import { GmailPage } from "./components/GmailPage";
 import { GoalsPage } from "./components/GoalsPage";
+import { InvestmentsPage } from "./components/InvestmentsPage";
 import { LoginScreen } from "./components/LoginScreen";
 import { PlaceholderPage } from "./components/PlaceholderPage";
 import { ReportsPage } from "./components/ReportsPage";
@@ -16,6 +17,7 @@ import {
   buildBudgetsPageModel,
   buildGmailPageModel,
   buildGoalsPageModel,
+  buildInvestmentsPageModel,
   buildReportsPageModel,
   buildSettingsPageModel,
   buildSummaryModel,
@@ -68,6 +70,7 @@ function App() {
   const budgetsPageModel = useMemo(() => buildBudgetsPageModel(), []);
   const accountsPageModel = useMemo(() => buildAccountsPageModel(), []);
   const goalsPageModel = useMemo(() => buildGoalsPageModel(), []);
+  const investmentsPageModel = useMemo(() => buildInvestmentsPageModel(), []);
   const reportsPageModel = useMemo(
     () => buildReportsPageModel(displayTransactions),
     [displayTransactions]
@@ -307,6 +310,11 @@ function App() {
       ) : currentRoute === "accounts" ? (
         <AccountsPage
           model={accountsPageModel}
+          loading={loading}
+        />
+      ) : currentRoute === "investments" ? (
+        <InvestmentsPage
+          model={investmentsPageModel}
           loading={loading}
         />
       ) : currentRoute === "reports" ? (

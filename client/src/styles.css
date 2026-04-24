@@ -3602,6 +3602,273 @@ svg {
   padding-top: 0;
 }
 
+.investments-page-stack {
+  display: grid;
+  gap: 16px;
+}
+
+.investments-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.investments-header-select {
+  min-width: 220px;
+}
+
+.investments-page-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 338px;
+  gap: 16px;
+  align-items: start;
+}
+
+.investments-main-column,
+.investments-detail-column {
+  display: grid;
+  gap: 16px;
+}
+
+.investments-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.investment-metric-card {
+  min-height: 128px;
+  display: grid;
+  gap: 12px;
+}
+
+.investment-metric-helper,
+.investments-asset-copy span,
+.investments-detail-copy span,
+.investments-detail-metrics span,
+.investments-detail-grid span,
+.investments-notes p,
+.investments-income-copy span,
+.investment-return-stack span,
+.investment-return-stack small {
+  color: #8fa0c1;
+}
+
+.investments-top-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.95fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.investments-chart-card,
+.investments-distribution-card,
+.investments-positions-card,
+.investments-detail-card,
+.investments-mini-card {
+  display: grid;
+  gap: 16px;
+}
+
+.investments-range-strip {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.investments-line-chart svg {
+  height: 280px;
+}
+
+.investments-toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 190px 190px 42px;
+  gap: 12px;
+}
+
+.investments-table {
+  width: 100%;
+  min-width: 980px;
+  border-collapse: collapse;
+}
+
+.investments-table th,
+.investments-table td {
+  text-align: left;
+  padding: 14px 12px;
+  border-top: 1px solid rgba(47, 59, 88, 0.72);
+  vertical-align: middle;
+}
+
+.investments-table th {
+  color: #8fa0c1;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.investments-table tbody tr {
+  cursor: pointer;
+  transition: background 140ms ease;
+}
+
+.investments-table tbody tr:hover td,
+.investments-table tbody tr.active td {
+  background: rgba(13, 20, 34, 0.84);
+}
+
+.investments-table tbody tr.active td:first-child {
+  border-top-left-radius: 14px;
+  border-bottom-left-radius: 14px;
+}
+
+.investments-table tbody tr.active td:last-child {
+  border-top-right-radius: 14px;
+  border-bottom-right-radius: 14px;
+}
+
+.investments-asset-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.investments-asset-copy,
+.investments-detail-copy {
+  min-width: 0;
+}
+
+.investments-asset-copy strong,
+.investments-detail-copy strong,
+.investments-detail-metrics strong,
+.investments-detail-grid strong {
+  display: block;
+}
+
+.investment-asset-badge {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid rgba(62, 75, 111, 0.45);
+  display: inline-grid;
+  place-items: center;
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.investment-asset-badge.large {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+}
+
+.investment-asset-badge.tone-apple {
+  background: rgba(239, 243, 252, 0.18);
+  color: #eef3ff;
+}
+
+.investment-asset-badge.tone-microsoft {
+  background: rgba(47, 110, 249, 0.16);
+  color: #8ab4ff;
+}
+
+.investment-asset-badge.tone-vanguard {
+  background: rgba(227, 71, 87, 0.16);
+  color: #ff97a3;
+}
+
+.investment-asset-badge.tone-ishares {
+  background: rgba(90, 115, 255, 0.16);
+  color: #b8c5ff;
+}
+
+.investment-asset-badge.tone-treasury {
+  background: rgba(102, 127, 161, 0.16);
+  color: #c0d0eb;
+}
+
+.investment-asset-badge.tone-bitcoin {
+  background: rgba(255, 184, 77, 0.16);
+  color: #ffc96e;
+}
+
+.investment-return-stack {
+  display: grid;
+  gap: 2px;
+}
+
+.investments-bottom-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.investments-mini-list {
+  display: grid;
+  gap: 12px;
+}
+
+.investments-performance-row,
+.investments-income-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.investments-detail-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.investments-detail-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.investments-detail-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.investments-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(47, 59, 88, 0.72);
+}
+
+.investments-detail-section {
+  display: grid;
+  gap: 14px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(47, 59, 88, 0.72);
+}
+
+.investments-detail-chart svg {
+  height: 180px;
+}
+
+.investments-notes {
+  display: grid;
+  gap: 10px;
+}
+
+.investments-notes p {
+  margin: 0;
+  line-height: 1.55;
+}
+
+.investments-detail-actions {
+  display: grid;
+  gap: 12px;
+}
+
 @media (max-width: 1280px) {
   .dashboard-shell {
     grid-template-columns: 1fr;
@@ -3620,7 +3887,8 @@ svg {
   .gmail-page-grid,
   .transactions-page-grid,
   .settings-page-grid,
-  .accounts-page-grid {
+  .accounts-page-grid,
+  .investments-page-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -3688,6 +3956,10 @@ svg {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .investments-metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .budgets-toolbar {
     grid-template-columns: 1fr;
   }
@@ -3697,6 +3969,15 @@ svg {
   }
 
   .accounts-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .investments-top-grid,
+  .investments-bottom-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .investments-toolbar {
     grid-template-columns: 1fr;
   }
 
@@ -3739,6 +4020,10 @@ svg {
 
   .accounts-table {
     min-width: 760px;
+  }
+
+  .investments-table {
+    min-width: 920px;
   }
 
   .report-donut-layout,
@@ -3806,13 +4091,16 @@ svg {
   .reports-metrics-grid,
   .goals-metrics-grid,
   .accounts-metrics-grid,
+  .investments-metrics-grid,
   .settings-wide-row,
   .settings-security-row,
   .settings-list-row,
   .settings-list-row.simple,
   .settings-list-row.simple.notification,
   .accounts-detail-meta,
-  .accounts-detail-actions {
+  .accounts-detail-actions,
+  .investments-detail-metrics,
+  .investments-detail-grid {
     grid-template-columns: 1fr;
   }
 
@@ -3869,9 +4157,17 @@ svg {
   }
 
   .accounts-detail-title,
-  .accounts-info-row {
+  .accounts-info-row,
+  .investments-detail-title,
+  .investments-header-actions,
+  .investments-performance-row,
+  .investments-income-row {
     display: grid;
     grid-template-columns: 1fr;
+  }
+
+  .investments-header-select {
+    width: 100%;
   }
 
   .month-control {
