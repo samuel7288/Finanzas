@@ -1,0 +1,236 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum TransactionStatus {
+  pending
+  approved
+  ignored
+}
+
+enum TransactionSource {
+  gmail
+  manual
+}
+
+enum SyncProvider {
+  gmail
+}
+
+enum AccountKind {
+  bank
+  card
+  cash
+  investment
+  loan
+}
+
+enum AlertPriority {
+  high
+  medium
+  low
+}
+
+enum AlertState {
+  new
+  viewed
+  resolved
+  ignored
+  snoozed
+}
+
+model User {
+  id                  String               @id @default(cuid())
+  email               String               @unique
+  name                String
+  picture             String?
+  googleConnection    GoogleConnection?
+  transactions        Transaction[]
+  syncLogs            SyncLog[]
+  budgets             Budget[]
+  goals               Goal[]
+  accounts            Account[]
+  investmentPositions InvestmentPosition[]
+  alerts              Alert[]
+  alertRules          AlertRule[]
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+}
+
+model GoogleConnection {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  provider    String   @default("google")
+  email       String
+  name        String
+  picture     String?
+  tokens      Json
+  connectedAt DateTime
+  lastSyncAt  DateTime?
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Transaction {
+  id              String            @id @default(uuid())
+  userId          String
+  accountId       String?
+  source          TransactionSource
+  sourceMessageId String?           @unique
+  emailSubject    String?
+  emailFrom       String?
+  amount          Decimal           @db.Decimal(14, 2)
+  currency        String            @db.VarChar(3)
+  merchant        String
+  purchasedAt     DateTime
+  category        String
+  status          TransactionStatus
+  confidence      Float
+  rawText         String?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  account         Account?          @relation(fields: [accountId], references: [id], onDelete: SetNull)
+
+  @@index([userId, purchasedAt(sort: Desc)])
+  @@index([userId, status])
+  @@index([userId, source])
+}
+
+model SyncLog {
+  id         String       @id @default(cuid())
+  userId     String
+  provider   SyncProvider
+  startedAt  DateTime
+  finishedAt DateTime
+  scanned    Int
+  imported   Int
+  skipped    Int
+  createdAt  DateTime     @default(now())
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, startedAt(sort: Desc)])
+}
+
+model Budget {
+  id            String   @id @default(cuid())
+  userId        String
+  name          String
+  category      String?
+  month         DateTime?
+  monthlyLimit  Decimal? @db.Decimal(14, 2)
+  currentSpent  Decimal? @db.Decimal(14, 2)
+  status        String?
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, month])
+}
+
+model Goal {
+  id                  String   @id @default(cuid())
+  userId              String
+  title               String
+  category            String?
+  targetAmount        Decimal  @db.Decimal(14, 2)
+  currentAmount       Decimal  @db.Decimal(14, 2)
+  monthlyContribution Decimal? @db.Decimal(14, 2)
+  dueDate             DateTime?
+  status              String?
+  notes               String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, dueDate])
+}
+
+model Account {
+  id                  String               @id @default(cuid())
+  userId              String
+  name                String
+  institution         String
+  kind                AccountKind
+  maskedNumber        String?
+  currency            String               @default("USD") @db.VarChar(3)
+  balance             Decimal              @db.Decimal(14, 2)
+  availableBalance    Decimal?             @db.Decimal(14, 2)
+  status              String?
+  accountType         String?
+  externalAccountId   String?
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  user                User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions        Transaction[]
+  investmentPositions InvestmentPosition[]
+
+  @@index([userId, kind])
+  @@index([userId, institution])
+}
+
+model InvestmentPosition {
+  id               String   @id @default(cuid())
+  userId           String
+  accountId        String?
+  symbol           String
+  name             String
+  assetType        String
+  quantity         Decimal  @db.Decimal(18, 8)
+  averagePrice     Decimal  @db.Decimal(14, 4)
+  currentPrice     Decimal? @db.Decimal(14, 4)
+  currentValue     Decimal? @db.Decimal(14, 2)
+  returnValue      Decimal? @db.Decimal(14, 2)
+  returnPercent    Float?
+  portfolioShare   Float?
+  status           String?
+  metadata         Json?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  account          Account? @relation(fields: [accountId], references: [id], onDelete: SetNull)
+
+  @@index([userId, symbol])
+  @@index([userId, assetType])
+}
+
+model Alert {
+  id          String        @id @default(cuid())
+  userId      String
+  title       String
+  description String
+  type        String
+  category    String
+  priority    AlertPriority
+  state       AlertState
+  actionLabel String?
+  metadata    Json?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, priority])
+  @@index([userId, state])
+  @@index([userId, category])
+}
+
+model AlertRule {
+  id          String   @id @default(cuid())
+  userId      String
+  title       String
+  description String
+  type        String
+  enabled     Boolean  @default(true)
+  config      Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, type])
+}

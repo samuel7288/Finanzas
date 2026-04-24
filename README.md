@@ -60,9 +60,39 @@ Y abrir:
 http://localhost:4000
 ```
 
-## Datos locales
+## Base de datos
 
-Los tokens de Gmail y tus transacciones se guardan en `data/app-data.json`. Ese archivo esta en `.gitignore` para evitar subir informacion personal al repositorio.
+La app ahora viene preparada para usar `Prisma + PostgreSQL`.
+
+- Si `DATABASE_URL` esta configurada, el backend usa PostgreSQL.
+- Si `DATABASE_URL` no existe, la app sigue funcionando con `data/app-data.json` como respaldo local mientras terminas la migracion.
+
+Para preparar Prisma:
+
+```bash
+npm.cmd run prisma:generate
+```
+
+En Prisma ORM v7 la conexion de PostgreSQL se lee desde [prisma.config.ts](<C:\Users\samue\OneDrive\Documents\GitHub\Finanzas\prisma.config.ts>) y el esquema vive en [schema.prisma](<C:\Users\samue\OneDrive\Documents\GitHub\Finanzas\prisma\schema.prisma>).
+
+Cuando ya tengas tu base PostgreSQL disponible:
+
+```bash
+npm.cmd run prisma:push
+```
+
+La base ya incluye modelos para:
+
+- usuarios
+- conexion Google / Gmail
+- transacciones
+- logs de sincronizacion
+- presupuestos
+- metas
+- cuentas
+- posiciones de inversion
+- alertas
+- reglas automaticas
 
 ## Google y Gmail
 
