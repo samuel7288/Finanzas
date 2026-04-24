@@ -24,6 +24,11 @@ function getMerchantLabel(merchant: string) {
   if (label.includes("apple")) return "A";
   if (label.includes("luz")) return "L";
   if (label.includes("salario")) return "$";
+  if (label.includes("restaurante")) return "R";
+  if (label.includes("freelance")) return "Fr";
+  if (label.includes("transferencia")) return "Tr";
+  if (label.includes("gasolina") || label.includes("pemex")) return "G";
+  if (label.includes("farmacia")) return "F";
   return merchant.slice(0, 2).toUpperCase();
 }
 
@@ -41,5 +46,9 @@ function getMerchantTone(merchant: string) {
   if (label.includes("salario")) return " brand-income";
   if (label.includes("farmacia")) return " brand-health";
   if (label.includes("luz")) return " brand-power";
+  if (label.includes("restaurante")) return " brand-restaurant";
+  if (label.includes("freelance")) return " brand-freelance";
+  if (label.includes("transferencia")) return " brand-transfer";
+  if (label.includes("gasolina") || label.includes("pemex")) return " brand-gas";
   return " brand-default";
 }

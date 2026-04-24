@@ -607,6 +607,10 @@ svg {
   gap: 12px;
 }
 
+.header-inline-button {
+  flex: 0 0 auto;
+}
+
 .date-button {
   min-width: 194px;
   justify-content: space-between;
@@ -1715,6 +1719,243 @@ svg {
   color: #f1f5ff;
 }
 
+.brand-restaurant {
+  background: #1b2212;
+  color: #8ce39e;
+}
+
+.brand-freelance {
+  background: #0f2118;
+  color: #73e4a8;
+}
+
+.brand-transfer {
+  background: #221d0c;
+  color: #ffd26a;
+}
+
+.brand-gas {
+  background: #0d1e37;
+  color: #6fb1ff;
+}
+
+.transactions-page-stack {
+  display: grid;
+  gap: 16px;
+}
+
+.transactions-toolbar {
+  display: grid;
+  grid-template-columns: minmax(260px, 1.4fr) repeat(3, minmax(180px, 0.72fr)) auto;
+  gap: 12px;
+}
+
+.transaction-chip-strip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.transaction-filter-chip {
+  min-height: 42px;
+  border: 1px solid rgba(62, 75, 111, 0.82);
+  border-radius: 10px;
+  background: rgba(11, 17, 30, 0.84);
+  color: #afbad5;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.transaction-filter-chip.active {
+  color: #f6f8ff;
+}
+
+.transaction-filter-chip.tone-violet.active {
+  border-color: rgba(126, 91, 255, 0.7);
+  background: rgba(126, 91, 255, 0.14);
+}
+
+.transaction-filter-chip.tone-green.active {
+  border-color: rgba(46, 211, 155, 0.55);
+  background: rgba(46, 211, 155, 0.12);
+}
+
+.transaction-filter-chip.tone-amber.active {
+  border-color: rgba(255, 196, 59, 0.56);
+  background: rgba(255, 196, 59, 0.1);
+}
+
+.transaction-filter-chip.tone-blue.active {
+  border-color: rgba(47, 110, 249, 0.56);
+  background: rgba(47, 110, 249, 0.12);
+}
+
+.transaction-filter-chip.tone-muted.active {
+  border-color: rgba(128, 143, 173, 0.48);
+  background: rgba(128, 143, 173, 0.1);
+}
+
+.transaction-filter-count {
+  min-width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  display: inline-grid;
+  place-items: center;
+  padding: 0 7px;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.transactions-page-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 332px;
+  gap: 16px;
+  align-items: start;
+}
+
+.transactions-table-surface {
+  padding: 0;
+  overflow: hidden;
+}
+
+.transactions-table {
+  width: 100%;
+  min-width: 1060px;
+  border-collapse: collapse;
+}
+
+.transactions-table th,
+.transactions-table td {
+  padding: 16px 14px;
+  border-bottom: 1px solid rgba(43, 55, 82, 0.78);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.transactions-table th {
+  color: #90a0bf;
+  font-size: 0.79rem;
+  font-weight: 700;
+}
+
+.transactions-table tbody tr {
+  transition: background 140ms ease;
+}
+
+.transactions-table tbody tr:hover {
+  background: rgba(19, 27, 43, 0.92);
+}
+
+.transactions-table tbody tr.selected {
+  background: rgba(24, 34, 57, 0.98);
+}
+
+.transactions-table input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #7358ff;
+}
+
+.transactions-date-cell {
+  color: #8a98b6;
+  white-space: nowrap;
+}
+
+.amount-positive,
+.amount-negative {
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.amount-positive,
+.transaction-detail-total.positive {
+  color: #31d69d;
+}
+
+.amount-negative {
+  color: #ff6678;
+}
+
+.status-pill,
+.source-pill {
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.83rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.status-pill.success {
+  border: 1px solid rgba(46, 211, 155, 0.34);
+  background: rgba(46, 211, 155, 0.12);
+  color: #52dca5;
+}
+
+.status-pill.warning {
+  border: 1px solid rgba(255, 196, 59, 0.34);
+  background: rgba(255, 196, 59, 0.12);
+  color: #ffd06a;
+}
+
+.status-pill.muted {
+  border: 1px solid rgba(128, 143, 173, 0.3);
+  background: rgba(128, 143, 173, 0.1);
+  color: #b3bfd8;
+}
+
+.source-pill {
+  border: 1px solid rgba(126, 91, 255, 0.38);
+  background: rgba(126, 91, 255, 0.14);
+  color: #cfbfff;
+}
+
+.transactions-table-footer,
+.transactions-footer-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.transactions-table-footer {
+  padding: 14px 18px;
+  justify-content: space-between;
+  color: #91a1c0;
+}
+
+.transactions-footer-controls {
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.transactions-page-size {
+  min-width: 148px;
+}
+
+.detail-product-total {
+  border-top: 1px solid rgba(47, 59, 88, 0.72);
+  padding-top: 12px;
+}
+
+.transactions-detail-actions {
+  display: grid;
+  gap: 12px;
+}
+
+.detail-secondary-button {
+  width: 100%;
+}
+
 @media (max-width: 1280px) {
   .dashboard-shell {
     grid-template-columns: 1fr;
@@ -1730,7 +1971,8 @@ svg {
 
   .dashboard-columns,
   .analytics-grid,
-  .gmail-page-grid {
+  .gmail-page-grid,
+  .transactions-page-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -1769,14 +2011,23 @@ svg {
     grid-template-columns: 1fr;
   }
 
+  .transactions-toolbar {
+    grid-template-columns: 1fr;
+  }
+
   .gmail-highlight,
-  .gmail-table-footer {
+  .gmail-table-footer,
+  .transactions-table-footer {
     flex-direction: column;
     align-items: stretch;
   }
 
   .gmail-table {
     min-width: 720px;
+  }
+
+  .transactions-table {
+    min-width: 860px;
   }
 }
 
@@ -1807,6 +2058,10 @@ svg {
   .topbar-actions,
   .sidebar-nav {
     width: 100%;
+  }
+
+  .topbar-actions {
+    flex-wrap: wrap;
   }
 
   .sidebar-nav {
@@ -1850,5 +2105,9 @@ svg {
   .detail-field-row,
   .detail-actions {
     grid-template-columns: 1fr;
+  }
+
+  .transactions-footer-controls {
+    justify-content: flex-start;
   }
 }

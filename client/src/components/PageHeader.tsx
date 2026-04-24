@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { Icon, IconName } from "../icons";
 
 interface PageHeaderProps {
@@ -5,13 +6,17 @@ interface PageHeaderProps {
   subtitle: string;
   dateRangeLabel: string;
   leadingIcon?: IconName;
+  actions?: ReactNode;
+  showNotifications?: boolean;
 }
 
 export function PageHeader({
   title,
   subtitle,
   dateRangeLabel,
-  leadingIcon
+  leadingIcon,
+  actions,
+  showNotifications = true
 }: PageHeaderProps) {
   return (
     <header className="dashboard-topbar">
@@ -33,10 +38,14 @@ export function PageHeader({
           <Icon name="calendar" />
         </button>
 
-        <button className="icon-button" title="Alertas" aria-label="Alertas">
-          <Icon name="bell" />
-          <span className="notification-badge">3</span>
-        </button>
+        {actions}
+
+        {showNotifications ? (
+          <button className="icon-button" title="Alertas" aria-label="Alertas">
+            <Icon name="bell" />
+            <span className="notification-badge">3</span>
+          </button>
+        ) : null}
       </div>
     </header>
   );

@@ -4,10 +4,12 @@ import { GmailPage } from "./components/GmailPage";
 import { LoginScreen } from "./components/LoginScreen";
 import { PlaceholderPage } from "./components/PlaceholderPage";
 import { SummaryPage } from "./components/SummaryPage";
+import { TransactionsPage } from "./components/TransactionsPage";
 import {
   buildAppShellModel,
   buildGmailPageModel,
   buildSummaryModel,
+  buildTransactionsPageModel,
   createPreviewTransactions
 } from "./dashboardData";
 import { AppRouteId, GmailStatus, Transaction } from "./types";
@@ -43,6 +45,10 @@ function App() {
   );
   const gmailPageModel = useMemo(
     () => buildGmailPageModel(displayTransactions),
+    [displayTransactions]
+  );
+  const transactionsPageModel = useMemo(
+    () => buildTransactionsPageModel(displayTransactions),
     [displayTransactions]
   );
 
@@ -255,6 +261,14 @@ function App() {
           onApprove={handleApproveDetected}
           onIgnore={handleIgnoreDetected}
           onApproveMany={handleApproveMany}
+          onCategoryChange={handleCategoryChange}
+        />
+      ) : currentRoute === "transactions" ? (
+        <TransactionsPage
+          model={transactionsPageModel}
+          loading={loading}
+          onApprove={handleApproveDetected}
+          onIgnore={handleIgnoreDetected}
           onCategoryChange={handleCategoryChange}
         />
       ) : (

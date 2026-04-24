@@ -13,7 +13,12 @@ import {
   RecentTransactionData,
   ReviewItemData,
   SummaryPageModel,
-  Transaction
+  Transaction,
+  TransactionChipData,
+  TransactionKind,
+  TransactionRowData,
+  TransactionsPageModel,
+  TransactionsTabData
 } from "./types";
 
 export const categories = [
@@ -24,7 +29,9 @@ export const categories = [
   "Salud",
   "Vivienda",
   "Viajes",
+  "Transferencia",
   "Ingreso",
+  "Servicios",
   "Tecnologia",
   "Otros"
 ];
@@ -34,6 +41,8 @@ const accountOptions = [
   "Tarjeta de debito - 5678",
   "Cuenta bancaria - 1234"
 ];
+
+const paymentMethodOptions = ["Tarjeta", "Transferencia", "Automatico"];
 
 const navItems: NavItem[] = [
   { id: "summary", label: "Resumen", icon: "home" },
@@ -238,11 +247,14 @@ const previewTransactions: Transaction[] = [
   createTransaction("preview-spotify", "Spotify", 4.99, "Entretenimiento", "2026-04-19T09:09:00Z", "pending", "gmail", 0.98, "Suscripcion mensual"),
   createTransaction("preview-amazon-old", "Amazon.com", 39.9, "Compras", "2026-04-12T09:14:00Z", "approved", "gmail", 0.96, "Pedido #114-1111111-1234567"),
   createTransaction("preview-gym-ignored", "Gym Pro", 25, "Salud", "2026-04-10T12:00:00Z", "ignored", "gmail", 0.74, "Cobro no recurrente"),
-  createTransaction("preview-supermarket", "Supermercado", 85.4, "Alimentacion", "2026-04-19T14:35:00Z", "approved", "manual", 1, "Compra registrada"),
-  createTransaction("preview-salary", "Salario", 1800, "Ingreso", "2026-04-18T09:20:00Z", "approved", "manual", 1, "Deposito mensual"),
-  createTransaction("preview-freelance", "Freelance Project", 350, "Ingreso", "2026-04-17T13:10:00Z", "approved", "manual", 1, "Pago recibido"),
-  createTransaction("preview-pharmacy", "Farmacia", 23.9, "Salud", "2026-04-16T16:24:00Z", "approved", "manual", 1, "Compra registrada"),
-  createTransaction("preview-power", "Luz", 60, "Vivienda", "2026-04-15T10:12:00Z", "approved", "manual", 1, "Pago automatico")
+  createTransaction("preview-supermarket", "Supermercado", 85.4, "Alimentacion", "2026-04-18T14:35:00Z", "approved", "manual", 1, "Compra registrada"),
+  createTransaction("preview-salary", "Salario", 1800, "Ingreso", "2026-04-18T09:20:00Z", "approved", "manual", 1, "Pago mensual"),
+  createTransaction("preview-restaurant", "Restaurante El Faro", 45.6, "Alimentacion", "2026-04-17T20:10:00Z", "approved", "manual", 1, "Cena"),
+  createTransaction("preview-transfer", "Transferencia a Sofia", 200, "Transferencia", "2026-04-16T11:42:00Z", "approved", "manual", 1, "Apoyo mensual"),
+  createTransaction("preview-gas", "Gasolina Pemex", 40, "Transporte", "2026-04-15T16:20:00Z", "approved", "manual", 1, "Estacion de servicio"),
+  createTransaction("preview-freelance", "Freelance Project", 350, "Ingreso", "2026-04-14T13:10:00Z", "approved", "manual", 1, "Pago recibido"),
+  createTransaction("preview-pharmacy", "Farmacia Guadalajara", 23.9, "Salud", "2026-04-13T16:24:00Z", "approved", "manual", 1, "Medicamentos"),
+  createTransaction("preview-power", "Luz CFE", 60, "Servicios", "2026-04-12T10:12:00Z", "approved", "manual", 1, "Recibo de luz")
 ];
 
 export function createPreviewTransactions() {
@@ -314,6 +326,72 @@ export function buildGmailPageModel(transactions: Transaction[]): GmailPageModel
   };
 }
 
+export function buildTransactionsPageModel(
+  transactions: Transaction[]
+): TransactionsPageModel {
+  const rows = transactions
+    .slice()
+    .sort((left, right) => new Date(right.purchasedAt).getTime() - new Date(left.purchasedAt).getTime())
+    .map((transaction) => buildTransactionRow(transaction));
+
+  const tabs: TransactionsTabData[] = [
+    { id: "all", label: "Todas", count: rows.length },
+    {
+      id: "income",
+      label: "Ingresos",
+      count: rows.filter((row) => row.kind === "income").length
+    },
+    {
+      id: "expense",
+      label: "Gastos",
+      count: rows.filter((row) => row.kind === "expense").length
+    },
+    {
+      id: "transfer",
+      label: "Transferencias",
+      count: rows.filter((row) => row.kind === "transfer").length
+    }
+  ];
+
+  const chips: TransactionChipData[] = [
+    { id: "all", label: "Todas", count: rows.length, tone: "violet" },
+    {
+      id: "approved",
+      label: "Confirmadas",
+      count: rows.filter((row) => row.status === "approved").length,
+      tone: "green"
+    },
+    {
+      id: "pending",
+      label: "Pendientes",
+      count: rows.filter((row) => row.status === "pending").length,
+      tone: "amber"
+    },
+    {
+      id: "gmail",
+      label: "Detectadas (Gmail)",
+      count: rows.filter((row) => row.source === "gmail").length,
+      tone: "blue"
+    },
+    {
+      id: "ignored",
+      label: "Ignoradas",
+      count: rows.filter((row) => row.status === "ignored").length,
+      tone: "muted"
+    }
+  ];
+
+  return {
+    dateRangeLabel: "1 - 31 Mayo 2024",
+    tabs,
+    chips,
+    rows,
+    categoryOptions: ["Todas las categorias", ...categories],
+    accountOptions: ["Todas las cuentas", ...accountOptions],
+    paymentMethodOptions: ["Todos los metodos", ...paymentMethodOptions]
+  };
+}
+
 function buildReviewItems(transactions: Transaction[]): ReviewItemData[] {
   return transactions
     .filter((transaction) => transaction.source === "gmail" && transaction.status === "pending")
@@ -341,7 +419,7 @@ function buildRecentTransactions(transactions: Transaction[]): RecentTransaction
       id: transaction.id,
       merchant: transaction.merchant,
       dateLabel: formatTransactionDate(transaction.purchasedAt),
-      category: transaction.category,
+      category: getDisplayCategoryLabel(transaction.category),
       amountLabel: formatSignedAmount(transaction.amount, transaction.currency, isIncome(transaction)),
       positive: isIncome(transaction)
     }));
@@ -400,7 +478,7 @@ function buildGmailRow(transaction: Transaction): GmailRowData {
     confidenceTone:
       confidencePercent >= 90 ? "high" : confidencePercent >= 80 ? "medium" : "low",
     status: transaction.status,
-    statusLabel: getStatusLabel(transaction.status),
+    statusLabel: getGmailStatusLabel(transaction.status),
     isAutomatic: transaction.confidence >= 95 / 100,
     createRuleSuggested: transaction.confidence >= 90 / 100,
     detail: {
@@ -412,6 +490,55 @@ function buildGmailRow(transaction: Transaction): GmailRowData {
         { label: "Metodo de pago", value: accountLabel },
         { label: "Numero de pedido", value: transaction.emailSubject ?? "Sin numero visible" },
         { label: "Correo origen", value: transaction.emailFrom ?? getDefaultEmailFrom(transaction.merchant) }
+      ],
+      products
+    }
+  };
+}
+
+function buildTransactionRow(transaction: Transaction): TransactionRowData {
+  const kind = getTransactionKind(transaction);
+  const positive = isPositiveTransaction(transaction, kind);
+  const paymentMethodLabel = getPaymentMethodLabel(transaction, kind);
+  const accountLabel = getSuggestedAccount(transaction);
+  const products = getSuggestedProducts(transaction.merchant, transaction.amount, transaction.currency);
+  const confidencePercent = transaction.source === "gmail"
+    ? Math.round(transaction.confidence * 100)
+    : undefined;
+
+  return {
+    id: transaction.id,
+    merchant: transaction.merchant,
+    subtitle: getTransactionSubtitle(transaction),
+    dateLabel: formatTransactionDate(transaction.purchasedAt),
+    category: transaction.category,
+    categoryTone: getCategoryTone(transaction.category),
+    accountLabel,
+    paymentMethodLabel,
+    amountLabel: formatSignedAmount(transaction.amount, transaction.currency, positive),
+    positive,
+    kind,
+    status: transaction.status,
+    statusLabel: getTransactionStatusLabel(transaction.status),
+    statusTone: getTransactionStatusTone(transaction.status),
+    source: transaction.source,
+    sourceLabel: transaction.source === "gmail" ? "Detectada (Gmail)" : undefined,
+    confidencePercent,
+    detail: {
+      totalLabel: `${formatSignedAmount(transaction.amount, transaction.currency, positive)} ${transaction.currency}`,
+      categoryLabel: transaction.category,
+      accountLabel,
+      paymentMethodLabel,
+      statusLabel: getTransactionStatusLabel(transaction.status),
+      statusTone: getTransactionStatusTone(transaction.status),
+      sourceLabel: transaction.source === "gmail" ? "Detectada (Gmail)" : undefined,
+      confidenceLabel: confidencePercent ? `${confidencePercent}%` : undefined,
+      fields: [
+        { label: "Comercio", value: transaction.merchant },
+        {
+          label: "Correo origen",
+          value: transaction.emailFrom ?? getDefaultEmailFrom(transaction.merchant)
+        }
       ],
       products
     }
@@ -449,11 +576,25 @@ function createTransaction(
 function getSuggestedAccount(transaction: Transaction) {
   const merchant = transaction.merchant.toLowerCase();
 
-  if (merchant.includes("uber") || merchant.includes("walmart") || merchant.includes("spotify")) {
+  if (
+    merchant.includes("uber") ||
+    merchant.includes("walmart") ||
+    merchant.includes("spotify") ||
+    merchant.includes("salario") ||
+    merchant.includes("freelance") ||
+    merchant.includes("transferencia") ||
+    merchant.includes("luz")
+  ) {
     return "Cuenta bancaria - 1234";
   }
 
-  if (merchant.includes("starbucks")) {
+  if (
+    merchant.includes("starbucks") ||
+    merchant.includes("restaurante") ||
+    merchant.includes("gasolina") ||
+    merchant.includes("pemex") ||
+    merchant.includes("farmacia")
+  ) {
     return "Tarjeta de debito - 5678";
   }
 
@@ -485,6 +626,36 @@ function getSuggestedProducts(merchant: string, amount: number, currency: string
     ];
   }
 
+  if (label.includes("restaurante")) {
+    return [
+      { id: "p1", name: "Cena", amountLabel: formatMoney(amount, currency) }
+    ];
+  }
+
+  if (label.includes("gasolina") || label.includes("pemex")) {
+    return [
+      { id: "p1", name: "Combustible", amountLabel: formatMoney(amount, currency) }
+    ];
+  }
+
+  if (label.includes("farmacia")) {
+    return [
+      { id: "p1", name: "Medicamentos", amountLabel: formatMoney(amount, currency) }
+    ];
+  }
+
+  if (label.includes("luz")) {
+    return [
+      { id: "p1", name: "Servicio electrico", amountLabel: formatMoney(amount, currency) }
+    ];
+  }
+
+  if (label.includes("salario") || label.includes("freelance")) {
+    return [
+      { id: "p1", name: "Abono recibido", amountLabel: formatMoney(amount, currency) }
+    ];
+  }
+
   return [{ id: "p1", name: "Cargo detectado", amountLabel: formatMoney(amount, currency) }];
 }
 
@@ -497,6 +668,8 @@ function getCategoryTone(category: string) {
     Salud: "tone-pink",
     Vivienda: "tone-gold",
     Viajes: "tone-violet",
+    Transferencia: "tone-gold",
+    Servicios: "tone-gold",
     Tecnologia: "tone-cyan",
     Ingreso: "tone-green",
     Otros: "tone-muted"
@@ -513,11 +686,60 @@ function getDefaultEmailFrom(merchant: string) {
   if (label.includes("netflix")) return "info@account.netflix.com";
   if (label.includes("spotify")) return "no-reply@spotify.com";
   if (label.includes("apple")) return "do_not_reply@apple.com";
+  if (label.includes("restaurante")) return "hola@restauranteelfaro.com";
+  if (label.includes("freelance")) return "payments@client.com";
+  if (label.includes("farmacia")) return "notificaciones@farmacia.com";
+  if (label.includes("luz")) return "facturacion@energia.com";
   return `no-reply@${label.replace(/[^a-z0-9]/g, "") || "merchant"}.com`;
 }
 
 function isIncome(transaction: Transaction) {
   return transaction.category === "Ingreso";
+}
+
+function getTransactionKind(transaction: Transaction): TransactionKind {
+  if (transaction.category === "Ingreso") return "income";
+  if (transaction.category === "Transferencia") return "transfer";
+  return "expense";
+}
+
+function isPositiveTransaction(transaction: Transaction, kind: TransactionKind) {
+  if (kind === "income") return true;
+  if (kind === "transfer") {
+    return transaction.merchant.toLowerCase().includes("recib");
+  }
+
+  return false;
+}
+
+function getPaymentMethodLabel(
+  transaction: Transaction,
+  kind: TransactionKind
+) {
+  const merchant = transaction.merchant.toLowerCase();
+
+  if (kind === "income" || kind === "transfer") return "Transferencia";
+  if (
+    merchant.includes("uber") ||
+    merchant.includes("netflix") ||
+    merchant.includes("spotify") ||
+    merchant.includes("apple") ||
+    merchant.includes("luz")
+  ) {
+    return "Automatico";
+  }
+
+  return "Tarjeta";
+}
+
+function getDisplayCategoryLabel(category: string) {
+  if (category === "Ingreso") return "Ingresos";
+  return category;
+}
+
+function getTransactionSubtitle(transaction: Transaction) {
+  if (transaction.emailSubject) return transaction.emailSubject;
+  return "Movimiento registrado";
 }
 
 function getConnectedHelper(gmailStatus: GmailStatus | null) {
@@ -532,10 +754,24 @@ function getConnectionState(gmailStatus: GmailStatus | null): AppShellModel["con
   return "active";
 }
 
-function getStatusLabel(status: Transaction["status"]) {
+function getGmailStatusLabel(status: Transaction["status"]) {
   if (status === "approved") return "Registrada";
   if (status === "ignored") return "Ignorada";
   return "Pendiente";
+}
+
+function getTransactionStatusLabel(status: Transaction["status"]) {
+  if (status === "approved") return "Confirmada";
+  if (status === "ignored") return "Ignorada";
+  return "Pendiente";
+}
+
+function getTransactionStatusTone(
+  status: Transaction["status"]
+): TransactionRowData["statusTone"] {
+  if (status === "approved") return "success";
+  if (status === "ignored") return "muted";
+  return "warning";
 }
 
 function formatRelativeDate(value: string) {

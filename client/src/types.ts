@@ -12,6 +12,9 @@ export type AppRouteId =
   | "alerts"
   | "settings";
 export type GmailTabId = "pending" | "registered" | "ignored" | "rules";
+export type TransactionsTabId = "all" | "income" | "expense" | "transfer";
+export type TransactionChipId = "all" | "approved" | "pending" | "gmail" | "ignored";
+export type TransactionKind = "income" | "expense" | "transfer";
 
 export interface Transaction {
   id: string;
@@ -194,4 +197,59 @@ export interface GmailPageModel {
   pendingCount: number;
   categoryOptions: string[];
   accountOptions: string[];
+}
+
+export interface TransactionsTabData {
+  id: TransactionsTabId;
+  label: string;
+  count: number;
+}
+
+export interface TransactionChipData {
+  id: TransactionChipId;
+  label: string;
+  count: number;
+  tone: "violet" | "green" | "amber" | "blue" | "muted";
+}
+
+export interface TransactionRowData {
+  id: string;
+  merchant: string;
+  subtitle: string;
+  dateLabel: string;
+  category: string;
+  categoryTone: string;
+  accountLabel: string;
+  paymentMethodLabel: string;
+  amountLabel: string;
+  positive: boolean;
+  kind: TransactionKind;
+  status: TransactionStatus;
+  statusLabel: string;
+  statusTone: "success" | "warning" | "muted";
+  source: TransactionSource;
+  sourceLabel?: string;
+  confidencePercent?: number;
+  detail: {
+    totalLabel: string;
+    categoryLabel: string;
+    accountLabel: string;
+    paymentMethodLabel: string;
+    statusLabel: string;
+    statusTone: "success" | "warning" | "muted";
+    sourceLabel?: string;
+    confidenceLabel?: string;
+    fields: GmailDetailField[];
+    products: GmailProductData[];
+  };
+}
+
+export interface TransactionsPageModel {
+  dateRangeLabel: string;
+  tabs: TransactionsTabData[];
+  chips: TransactionChipData[];
+  rows: TransactionRowData[];
+  categoryOptions: string[];
+  accountOptions: string[];
+  paymentMethodOptions: string[];
 }
