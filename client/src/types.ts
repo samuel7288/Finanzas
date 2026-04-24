@@ -23,6 +23,13 @@ export type SettingsTabId =
   | "security"
   | "preferences";
 export type BudgetViewTabId = "general" | "daily";
+export type ReportTabId =
+  | "overview"
+  | "expenses"
+  | "income"
+  | "accounts"
+  | "comparisons"
+  | "trends";
 
 export interface Transaction {
   id: string;
@@ -422,4 +429,78 @@ export interface BudgetsPageModel {
   advice: BudgetAdviceData[];
   quickActions: BudgetQuickActionData[];
   chartRows: BudgetChartRowData[];
+}
+
+export interface ReportTabData {
+  id: ReportTabId;
+  label: string;
+}
+
+export interface ReportMetricData {
+  id: string;
+  label: string;
+  value: string;
+  delta: string;
+  deltaPositive: boolean;
+  icon: string;
+  accent: string;
+}
+
+export interface ReportComparisonRowData {
+  id: string;
+  label: string;
+  income: number;
+  expense: number;
+  savings: number;
+}
+
+export interface ReportCategoryData {
+  id: string;
+  label: string;
+  amountLabel: string;
+  percentageLabel: string;
+  color: string;
+  value: number;
+}
+
+export interface ReportTrendPointData {
+  id: string;
+  label: string;
+  value: number;
+  movingAverage: number;
+}
+
+export interface ReportAverageCategoryData {
+  id: string;
+  label: string;
+  value: number;
+  valueLabel: string;
+}
+
+export interface ReportAnnualSummaryData {
+  incomeLabel: string;
+  expenseLabel: string;
+  savingsLabel: string;
+  savingsRateLabel: string;
+  savingsRateProgress: number;
+}
+
+export interface ReportsPageModel {
+  dateRangeLabel: string;
+  tabs: ReportTabData[];
+  metrics: ReportMetricData[];
+  accountOptions: string[];
+  categoryOptions: string[];
+  comparisonRows: ReportComparisonRowData[];
+  comparisonSummary: Array<{
+    id: string;
+    label: string;
+    value: string;
+    delta: string;
+    positive: boolean;
+  }>;
+  categories: ReportCategoryData[];
+  trendPoints: ReportTrendPointData[];
+  averageCategories: ReportAverageCategoryData[];
+  annualSummary: ReportAnnualSummaryData;
 }

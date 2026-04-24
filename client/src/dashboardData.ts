@@ -23,6 +23,13 @@ import {
   NavItem,
   NotificationPreferenceData,
   RecentTransactionData,
+  ReportAverageCategoryData,
+  ReportCategoryData,
+  ReportComparisonRowData,
+  ReportMetricData,
+  ReportsPageModel,
+  ReportTabData,
+  ReportTrendPointData,
   ReviewItemData,
   SecurityItemData,
   SettingsPageModel,
@@ -474,6 +481,32 @@ const budgetQuickActions: BudgetQuickActionData[] = [
   { id: "copy", label: "Copiar presupuesto del mes pasado", icon: "copy" }
 ];
 
+const reportTabs: ReportTabData[] = [
+  { id: "overview", label: "Resumen general" },
+  { id: "expenses", label: "Gastos" },
+  { id: "income", label: "Ingresos" },
+  { id: "accounts", label: "Cuentas" },
+  { id: "comparisons", label: "Comparaciones" },
+  { id: "trends", label: "Tendencias" }
+];
+
+const reportComparisonRows: ReportComparisonRowData[] = [
+  { id: "jan", label: "Ene 2024", income: 17800, expense: 12150, savings: 7850 },
+  { id: "feb", label: "Feb 2024", income: 17700, expense: 13850, savings: 6550 },
+  { id: "mar", label: "Mar 2024", income: 18600, expense: 13920, savings: 10620 },
+  { id: "apr", label: "Abr 2024", income: 18950, expense: 14280, savings: 10120 },
+  { id: "may", label: "May 2024", income: 22000, expense: 12450.75, savings: 11120 }
+];
+
+const reportTrendPoints: ReportTrendPointData[] = [
+  { id: "dec", label: "Dic 2023", value: 7400, movingAverage: 7300 },
+  { id: "jan", label: "Ene 2024", value: 10300, movingAverage: 8600 },
+  { id: "feb", label: "Feb 2024", value: 11450, movingAverage: 9700 },
+  { id: "mar", label: "Mar 2024", value: 12640, movingAverage: 11500 },
+  { id: "apr", label: "Abr 2024", value: 14520, movingAverage: 13400 },
+  { id: "may", label: "May 2024", value: 16700, movingAverage: 15950 }
+];
+
 const balanceSeries = [8, 14, 13, 26, 24, 38, 40, 48, 50, 55, 46, 44, 53, 51, 56, 58, 62, 78, 82, 95];
 
 const seededCategories: CategoryItemData[] = [
@@ -812,6 +845,118 @@ export function buildBudgetsPageModel(): BudgetsPageModel {
   };
 }
 
+export function buildReportsPageModel(
+  transactions: Transaction[]
+): ReportsPageModel {
+  const approvedTransactions = transactions.filter(
+    (transaction) => transaction.status === "approved"
+  );
+  const derivedExpense = approvedTransactions
+    .filter((transaction) => getTransactionKind(transaction) === "expense")
+    .reduce((sum, transaction) => sum + transaction.amount, 0);
+  const derivedIncome = approvedTransactions
+    .filter((transaction) => getTransactionKind(transaction) === "income")
+    .reduce((sum, transaction) => sum + transaction.amount, 0);
+
+  const expenseTotal = derivedExpense > 5000 ? derivedExpense : 12450.75;
+  const incomeTotal = derivedIncome > 5000 ? derivedIncome : 18000;
+  const savingsTotal = incomeTotal - expenseTotal;
+  const transactionCount = approvedTransactions.length > 20 ? approvedTransactions.length : 124;
+
+  const metrics: ReportMetricData[] = [
+    {
+      id: "expense",
+      label: "Gasto total",
+      value: formatMoney(expenseTotal, "USD"),
+      delta: "8.2% vs Abr 2024",
+      deltaPositive: false,
+      icon: "budgets",
+      accent: "#7d4dff"
+    },
+    {
+      id: "income",
+      label: "Ingreso total",
+      value: formatMoney(incomeTotal, "USD"),
+      delta: "12.4% vs Abr 2024",
+      deltaPositive: true,
+      icon: "income",
+      accent: "#24c96f"
+    },
+    {
+      id: "savings",
+      label: "Ahorro neto",
+      value: formatMoney(savingsTotal, "USD"),
+      delta: "25.6% vs Abr 2024",
+      deltaPositive: true,
+      icon: "summary",
+      accent: "#2f6ef9"
+    },
+    {
+      id: "count",
+      label: "Transacciones",
+      value: `${transactionCount}`,
+      delta: "5 vs Abr 2024",
+      deltaPositive: true,
+      icon: "transactions",
+      accent: "#f2a93b"
+    },
+    {
+      id: "average",
+      label: "Gasto promedio diario",
+      value: formatMoney(expenseTotal / 31, "USD"),
+      delta: "6.3% vs Abr 2024",
+      deltaPositive: false,
+      icon: "expense",
+      accent: "#ff5479"
+    }
+  ];
+
+  const categories = buildReportCategories(expenseTotal);
+  const averageCategories = buildAverageCategorySeries(categories);
+
+  return {
+    dateRangeLabel: "1 - 31 Mayo 2024",
+    tabs: reportTabs,
+    metrics,
+    accountOptions: ["Todas las cuentas", ...accountOptions],
+    categoryOptions: ["Todas las categorias", ...categories.map((item) => item.label)],
+    comparisonRows: reportComparisonRows,
+    comparisonSummary: [
+      {
+        id: "summary-income",
+        label: "Ingresos totales",
+        value: formatMoney(incomeTotal, "USD"),
+        delta: "12.4% vs Abr 2024",
+        positive: true
+      },
+      {
+        id: "summary-expense",
+        label: "Gastos totales",
+        value: formatMoney(expenseTotal, "USD"),
+        delta: "8.2% vs Abr 2024",
+        positive: false
+      },
+      {
+        id: "summary-savings",
+        label: "Ahorro total",
+        value: formatMoney(savingsTotal, "USD"),
+        delta: "25.6% vs Abr 2024",
+        positive: true
+      }
+    ],
+    categories,
+    trendPoints: reportTrendPoints,
+    averageCategories,
+    annualSummary: {
+      incomeLabel: formatMoney(89250, "USD"),
+      expenseLabel: formatMoney(64320.35, "USD"),
+      savingsLabel: formatMoney(24929.65, "USD"),
+      savingsRateLabel: "27.9%",
+      savingsRateProgress: 0.279
+    }
+  };
+}
+
 function buildReviewItems(transactions: Transaction[]): ReviewItemData[] {
   return transactions
     .filter((transaction) => transaction.source === "gmail" && transaction.status === "pending")
@@ -991,6 +1136,45 @@ function buildBudgetRow(item: {
     icon: item.icon,
     tone: item.tone
   };
+}
+
+function buildReportCategories(expenseTotal: number): ReportCategoryData[] {
+  const seeded = [
+    { id: "food", label: "Alimentacion", value: 2850.4, color: "#2ed39b" },
+    { id: "transport", label: "Transporte", value: 1965.5, color: "#2f6ef9" },
+    { id: "entertainment", label: "Entretenimiento", value: 1672.8, color: "#e64b75" },
+    { id: "services", label: "Servicios", value: 2045.3, color: "#ffad34" },
+    { id: "health", label: "Salud", value: 820.9, color: "#c96bd2" },
+    { id: "shopping", label: "Compras", value: 980.6, color: "#5b63ff" },
+    { id: "others", label: "Otros", value: 2115.25, color: "#274f86" }
+  ];
+
+  const total = seeded.reduce((sum, item) => sum + item.value, 0);
+  const normalizedTotal = total > 0 ? total : expenseTotal;
+
+  return seeded.map((item) => ({
+    id: item.id,
+    label: item.label,
+    amountLabel: formatMoney(item.value, "USD"),
+    percentageLabel: `${((item.value / normalizedTotal) * 100).toFixed(1)}%`,
+    color: item.color,
+    value: item.value
+  }));
+}
+
+function buildAverageCategorySeries(
+  categories: ReportCategoryData[]
+): ReportAverageCategoryData[] {
+  return categories
+    .slice()
+    .sort((left, right) => right.value - left.value)
+    .slice(0, 6)
+    .map((item) => ({
+      id: item.id,
+      label: item.label,
+      value: Number((item.value / 30).toFixed(2)),
+      valueLabel: formatMoney(item.value / 30, "USD")
+    }));
 }
 
 function createTransaction(

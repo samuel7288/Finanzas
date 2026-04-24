@@ -4,6 +4,7 @@ import { BudgetsPage } from "./components/BudgetsPage";
 import { GmailPage } from "./components/GmailPage";
 import { LoginScreen } from "./components/LoginScreen";
 import { PlaceholderPage } from "./components/PlaceholderPage";
+import { ReportsPage } from "./components/ReportsPage";
 import { SettingsPage } from "./components/SettingsPage";
 import { SummaryPage } from "./components/SummaryPage";
 import { TransactionsPage } from "./components/TransactionsPage";
@@ -11,6 +12,7 @@ import {
   buildAppShellModel,
   buildBudgetsPageModel,
   buildGmailPageModel,
+  buildReportsPageModel,
   buildSettingsPageModel,
   buildSummaryModel,
   buildTransactionsPageModel,
@@ -60,6 +62,10 @@ function App() {
     [gmailStatus]
   );
   const budgetsPageModel = useMemo(() => buildBudgetsPageModel(), []);
+  const reportsPageModel = useMemo(
+    () => buildReportsPageModel(displayTransactions),
+    [displayTransactions]
+  );
 
   async function loadDashboard() {
     setError("");
@@ -290,6 +296,11 @@ function App() {
       ) : currentRoute === "budgets" ? (
         <BudgetsPage
           model={budgetsPageModel}
+          loading={loading}
+        />
+      ) : currentRoute === "reports" ? (
+        <ReportsPage
+          model={reportsPageModel}
           loading={loading}
         />
       ) : (

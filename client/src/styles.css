@@ -2367,6 +2367,281 @@ svg {
   text-align: left;
 }
 
+.reports-page-stack {
+  display: grid;
+  gap: 16px;
+}
+
+.reports-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.report-metric-card {
+  min-height: 132px;
+  display: grid;
+}
+
+.reports-toolbar {
+  display: grid;
+  grid-template-columns: minmax(220px, 240px) minmax(220px, 240px) minmax(260px, 1fr);
+  gap: 12px;
+  align-items: center;
+}
+
+.reports-toolbar-toggle {
+  min-height: 44px;
+  border: 1px solid rgba(59, 70, 98, 0.9);
+  border-radius: 10px;
+  background: #0c1321;
+  color: #dbe3f8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 0 14px;
+}
+
+.reports-primary-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.95fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.reports-secondary-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr) 320px;
+  gap: 16px;
+  align-items: start;
+}
+
+.report-chart-card,
+.report-donut-card,
+.report-horizontal-card,
+.report-annual-card,
+.report-placeholder-card {
+  display: grid;
+  gap: 18px;
+}
+
+.report-placeholder-card {
+  min-height: 260px;
+  place-items: center;
+  text-align: center;
+}
+
+.report-placeholder-card h2,
+.report-placeholder-card p {
+  margin: 0;
+}
+
+.report-placeholder-card p {
+  max-width: 420px;
+  color: #8fa0c1;
+}
+
+.report-chart-legend {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  color: #aab7d3;
+  font-size: 0.88rem;
+}
+
+.legend-swatch.income {
+  background: #24c96f;
+}
+
+.legend-swatch.expense {
+  background: #e64b75;
+}
+
+.legend-swatch.savings,
+.legend-swatch.trend {
+  background: #7d6bff;
+}
+
+.legend-swatch.moving {
+  background: #b59eff;
+}
+
+.report-chart-wrap svg {
+  width: 100%;
+  height: 270px;
+}
+
+.report-summary-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  border: 1px solid rgba(47, 59, 88, 0.72);
+  border-radius: 14px;
+  background: rgba(10, 16, 30, 0.74);
+  overflow: hidden;
+}
+
+.report-summary-box {
+  padding: 14px 16px;
+  display: grid;
+  gap: 6px;
+}
+
+.report-summary-box + .report-summary-box {
+  border-left: 1px solid rgba(47, 59, 88, 0.72);
+}
+
+.report-summary-box span,
+.report-annual-list span,
+.report-savings-rate span {
+  color: #8fa0c1;
+}
+
+.report-summary-box strong,
+.report-annual-list strong,
+.report-savings-rate strong {
+  font-size: 1.6rem;
+}
+
+.report-summary-box small {
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.report-summary-box small.positive,
+.report-annual-list .positive {
+  color: #2fd39b;
+}
+
+.report-summary-box small.negative,
+.report-annual-list .negative {
+  color: #ff6b7c;
+}
+
+.report-accent-blue {
+  color: #4b8fff;
+}
+
+.report-donut-layout {
+  display: grid;
+  grid-template-columns: minmax(190px, 0.72fr) minmax(0, 1fr);
+  gap: 22px;
+  align-items: center;
+}
+
+.report-donut {
+  width: 196px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  padding: 26px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto;
+}
+
+.report-donut-hole {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #0b1221;
+  border: 1px solid rgba(47, 59, 88, 0.6);
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.report-donut-hole strong {
+  display: block;
+  font-size: 1.95rem;
+}
+
+.report-donut-hole span {
+  color: #90a0c2;
+}
+
+.report-detail-button {
+  width: 100%;
+  justify-content: space-between;
+}
+
+.report-trend-chart svg {
+  height: 250px;
+}
+
+.report-average-list {
+  display: grid;
+  gap: 14px;
+}
+
+.report-average-row {
+  display: grid;
+  grid-template-columns: minmax(88px, 0.8fr) minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+}
+
+.report-average-track {
+  height: 14px;
+  border-radius: 999px;
+  background: rgba(45, 56, 82, 0.88);
+  overflow: hidden;
+}
+
+.report-average-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #6d48ff, #8f66ff);
+}
+
+.report-average-row strong {
+  color: #dbe3f8;
+}
+
+.report-annual-list {
+  display: grid;
+  gap: 12px;
+  border: 1px solid rgba(47, 59, 88, 0.72);
+  border-radius: 14px;
+  background: rgba(10, 16, 30, 0.74);
+  padding: 16px;
+}
+
+.report-annual-list div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.report-savings-rate {
+  border: 1px solid rgba(47, 59, 88, 0.72);
+  border-radius: 14px;
+  background: rgba(10, 16, 30, 0.74);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.report-savings-ring {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+.report-savings-ring div {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #0b1221;
+}
+
 .settings-page-stack {
   display: grid;
   gap: 16px;
@@ -2921,7 +3196,9 @@ svg {
   }
 
   .budgets-layout,
-  .budget-chart-layout {
+  .budget-chart-layout,
+  .reports-primary-grid,
+  .reports-secondary-grid {
     grid-template-columns: 1fr;
   }
 
@@ -2929,7 +3206,15 @@ svg {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .reports-metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .budgets-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .reports-toolbar {
     grid-template-columns: 1fr;
   }
 
@@ -2964,6 +3249,11 @@ svg {
 
   .transactions-table {
     min-width: 860px;
+  }
+
+  .report-donut-layout,
+  .report-summary-strip {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -3023,12 +3313,20 @@ svg {
 
   .settings-profile-grid,
   .budgets-metrics-grid,
+  .reports-metrics-grid,
   .settings-wide-row,
   .settings-security-row,
   .settings-list-row,
   .settings-list-row.simple,
   .settings-list-row.simple.notification {
     grid-template-columns: 1fr;
+  }
+
+  .report-average-row,
+  .report-savings-rate,
+  .report-annual-list div {
+    grid-template-columns: 1fr;
+    display: grid;
   }
 
   .budget-summary-top,
