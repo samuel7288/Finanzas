@@ -3,11 +3,13 @@ import { AppLayout } from "./components/AppLayout";
 import { GmailPage } from "./components/GmailPage";
 import { LoginScreen } from "./components/LoginScreen";
 import { PlaceholderPage } from "./components/PlaceholderPage";
+import { SettingsPage } from "./components/SettingsPage";
 import { SummaryPage } from "./components/SummaryPage";
 import { TransactionsPage } from "./components/TransactionsPage";
 import {
   buildAppShellModel,
   buildGmailPageModel,
+  buildSettingsPageModel,
   buildSummaryModel,
   buildTransactionsPageModel,
   createPreviewTransactions
@@ -50,6 +52,10 @@ function App() {
   const transactionsPageModel = useMemo(
     () => buildTransactionsPageModel(displayTransactions),
     [displayTransactions]
+  );
+  const settingsPageModel = useMemo(
+    () => buildSettingsPageModel(gmailStatus),
+    [gmailStatus]
   );
 
   async function loadDashboard() {
@@ -270,6 +276,13 @@ function App() {
           onApprove={handleApproveDetected}
           onIgnore={handleIgnoreDetected}
           onCategoryChange={handleCategoryChange}
+        />
+      ) : currentRoute === "settings" ? (
+        <SettingsPage
+          model={settingsPageModel}
+          loading={loading}
+          onConnectGmail={connectGmail}
+          onSyncGmail={syncGmail}
         />
       ) : (
         <PlaceholderPage route={currentRoute} />

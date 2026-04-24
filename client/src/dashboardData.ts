@@ -8,11 +8,17 @@ import {
   GmailStatus,
   GoalItemData,
   InsightCardData,
+  LinkedAccountData,
   MetricCardData,
   NavItem,
+  NotificationPreferenceData,
   RecentTransactionData,
   ReviewItemData,
+  SecurityItemData,
+  SettingsPageModel,
+  SettingsTabData,
   SummaryPageModel,
+  ThemeOptionData,
   Transaction,
   TransactionChipData,
   TransactionKind,
@@ -181,6 +187,90 @@ const insightItems: InsightCardData[] = [
     icon: "summary",
     tone: "green"
   }
+];
+
+const settingsTabs: SettingsTabData[] = [
+  { id: "profile", label: "Perfil" },
+  { id: "accounts", label: "Cuentas" },
+  { id: "connections", label: "Conexiones" },
+  { id: "notifications", label: "Notificaciones" },
+  { id: "security", label: "Seguridad" },
+  { id: "preferences", label: "Preferencias" }
+];
+
+const linkedAccounts: LinkedAccountData[] = [
+  {
+    id: "bbva",
+    institution: "BBVA Bancomer",
+    subtitle: "Cuenta de cheques - 1234",
+    tone: "tone-blue",
+    statusLabel: "Activa"
+  },
+  {
+    id: "santander",
+    institution: "Santander",
+    subtitle: "Tarjeta de credito - 5678",
+    tone: "tone-red",
+    statusLabel: "Activa"
+  },
+  {
+    id: "paypal",
+    institution: "PayPal",
+    subtitle: "Cuenta - samuelalas41@gmail.com",
+    tone: "tone-cyan",
+    statusLabel: "Activa"
+  }
+];
+
+const notificationPreferences: NotificationPreferenceData[] = [
+  {
+    id: "gmail-purchases",
+    title: "Compras detectadas (Gmail)",
+    description: "Recibe alertas cuando encontremos nuevas compras.",
+    enabled: true,
+    icon: "gmail"
+  },
+  {
+    id: "budget-reminders",
+    title: "Recordatorios de presupuesto",
+    description: "Te avisaremos si estas por exceder tu presupuesto.",
+    enabled: true,
+    icon: "calendar"
+  },
+  {
+    id: "weekly-summary",
+    title: "Resumen semanal",
+    description: "Recibe un resumen de tu actividad cada semana.",
+    enabled: false,
+    icon: "reports"
+  }
+];
+
+const securityItems: SecurityItemData[] = [
+  {
+    id: "password",
+    title: "Cambiar contrasena",
+    subtitle: "Disponible cuando uses acceso propio ademas de Google.",
+    icon: "lock"
+  },
+  {
+    id: "two-factor",
+    title: "Autenticacion en dos pasos",
+    statusLabel: "Activada",
+    icon: "shield"
+  },
+  {
+    id: "sessions",
+    title: "Sesiones activas",
+    statusLabel: "3",
+    icon: "devices"
+  }
+];
+
+const themeOptions: ThemeOptionData[] = [
+  { id: "light", label: "Claro", description: "Tema luminoso" },
+  { id: "dark", label: "Oscuro", description: "Tema principal" },
+  { id: "system", label: "Sistema", description: "Segun tu dispositivo" }
 ];
 
 const balanceSeries = [8, 14, 13, 26, 24, 38, 40, 48, 50, 55, 46, 44, 53, 51, 56, 58, 62, 78, 82, 95];
@@ -389,6 +479,63 @@ export function buildTransactionsPageModel(
     categoryOptions: ["Todas las categorias", ...categories],
     accountOptions: ["Todas las cuentas", ...accountOptions],
     paymentMethodOptions: ["Todos los metodos", ...paymentMethodOptions]
+  };
+}
+
+export function buildSettingsPageModel(
+  gmailStatus: GmailStatus | null
+): SettingsPageModel {
+  const displayName = gmailStatus?.name || "Samuel Alas";
+  const displayEmail = gmailStatus?.email || "samuelalas41@gmail.com";
+
+  return {
+    dateRangeLabel: "1 - 31 Mayo 2024",
+    tabs: settingsTabs,
+    profile: {
+      name: displayName,
+      email: displayEmail,
+      phone: "+503 7000 1122",
+      timezone: "(GMT-06:00) San Salvador",
+      currency: "USD - Dolar estadounidense",
+      language: "Espanol",
+      picture: gmailStatus?.picture
+    },
+    timezoneOptions: [
+      "(GMT-06:00) San Salvador",
+      "(GMT-06:00) Ciudad de Mexico",
+      "(GMT-05:00) Bogota",
+      "(GMT-04:00) Santo Domingo"
+    ],
+    currencyOptions: [
+      "USD - Dolar estadounidense",
+      "MXN - Peso mexicano",
+      "EUR - Euro"
+    ],
+    languageOptions: ["Espanol", "English"],
+    preferences: {
+      defaultCurrency: "USD - Dolar estadounidense",
+      dateFormat: "DD/MM/YYYY",
+      timeFormat: "12 horas (1:30 PM)"
+    },
+    defaultCurrencyOptions: [
+      "USD - Dolar estadounidense",
+      "MXN - Peso mexicano",
+      "EUR - Euro"
+    ],
+    dateFormatOptions: ["DD/MM/YYYY", "MM/DD/YYYY", "YYYY-MM-DD"],
+    timeFormatOptions: ["12 horas (1:30 PM)", "24 horas (13:30)"],
+    themeOptions,
+    linkedAccounts,
+    services: [
+      {
+        id: "gmail",
+        name: "Gmail",
+        email: displayEmail,
+        connected: Boolean(gmailStatus?.connected)
+      }
+    ],
+    notifications: notificationPreferences,
+    securityItems
   };
 }
 

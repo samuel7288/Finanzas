@@ -15,6 +15,13 @@ export type GmailTabId = "pending" | "registered" | "ignored" | "rules";
 export type TransactionsTabId = "all" | "income" | "expense" | "transfer";
 export type TransactionChipId = "all" | "approved" | "pending" | "gmail" | "ignored";
 export type TransactionKind = "income" | "expense" | "transfer";
+export type SettingsTabId =
+  | "profile"
+  | "accounts"
+  | "connections"
+  | "notifications"
+  | "security"
+  | "preferences";
 
 export interface Transaction {
   id: string;
@@ -252,4 +259,76 @@ export interface TransactionsPageModel {
   categoryOptions: string[];
   accountOptions: string[];
   paymentMethodOptions: string[];
+}
+
+export interface SettingsTabData {
+  id: SettingsTabId;
+  label: string;
+}
+
+export interface LinkedAccountData {
+  id: string;
+  institution: string;
+  subtitle: string;
+  tone: string;
+  statusLabel: string;
+}
+
+export interface ServiceConnectionData {
+  id: string;
+  name: string;
+  email: string;
+  connected: boolean;
+}
+
+export interface NotificationPreferenceData {
+  id: string;
+  title: string;
+  description: string;
+  enabled: boolean;
+  icon: string;
+}
+
+export interface SecurityItemData {
+  id: string;
+  title: string;
+  subtitle?: string;
+  statusLabel?: string;
+  icon: string;
+}
+
+export interface ThemeOptionData {
+  id: string;
+  label: string;
+  description: string;
+}
+
+export interface SettingsPageModel {
+  dateRangeLabel: string;
+  tabs: SettingsTabData[];
+  profile: {
+    name: string;
+    email: string;
+    phone: string;
+    timezone: string;
+    currency: string;
+    language: string;
+    picture?: string;
+  };
+  timezoneOptions: string[];
+  currencyOptions: string[];
+  languageOptions: string[];
+  preferences: {
+    defaultCurrency: string;
+    dateFormat: string;
+    timeFormat: string;
+  };
+  defaultCurrencyOptions: string[];
+  dateFormatOptions: string[];
+  timeFormatOptions: string[];
+  themeOptions: ThemeOptionData[];
+  linkedAccounts: LinkedAccountData[];
+  services: ServiceConnectionData[];
+  notifications: NotificationPreferenceData[];
+  securityItems: SecurityItemData[];
 }
