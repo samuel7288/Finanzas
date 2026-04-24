@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { AccountsPage } from "./components/AccountsPage";
+import { AlertsPage } from "./components/AlertsPage";
 import { AppLayout } from "./components/AppLayout";
 import { BudgetsPage } from "./components/BudgetsPage";
 import { GmailPage } from "./components/GmailPage";
@@ -14,6 +15,7 @@ import { TransactionsPage } from "./components/TransactionsPage";
 import {
   buildAppShellModel,
   buildAccountsPageModel,
+  buildAlertsPageModel,
   buildBudgetsPageModel,
   buildGmailPageModel,
   buildGoalsPageModel,
@@ -69,6 +71,7 @@ function App() {
   );
   const budgetsPageModel = useMemo(() => buildBudgetsPageModel(), []);
   const accountsPageModel = useMemo(() => buildAccountsPageModel(), []);
+  const alertsPageModel = useMemo(() => buildAlertsPageModel(), []);
   const goalsPageModel = useMemo(() => buildGoalsPageModel(), []);
   const investmentsPageModel = useMemo(() => buildInvestmentsPageModel(), []);
   const reportsPageModel = useMemo(
@@ -315,6 +318,11 @@ function App() {
       ) : currentRoute === "investments" ? (
         <InvestmentsPage
           model={investmentsPageModel}
+          loading={loading}
+        />
+      ) : currentRoute === "alerts" ? (
+        <AlertsPage
+          model={alertsPageModel}
           loading={loading}
         />
       ) : currentRoute === "reports" ? (

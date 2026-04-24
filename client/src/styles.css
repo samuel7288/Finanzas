@@ -3869,6 +3869,276 @@ svg {
   gap: 12px;
 }
 
+.alerts-page-stack {
+  display: grid;
+  gap: 16px;
+}
+
+.alerts-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.alerts-page-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 16px;
+  align-items: start;
+}
+
+.alerts-main-column,
+.alerts-side-column {
+  display: grid;
+  gap: 16px;
+}
+
+.alerts-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.alert-metric-card,
+.alerts-table-card,
+.alerts-bottom-card,
+.alerts-side-card {
+  display: grid;
+  gap: 16px;
+}
+
+.alerts-card-helper,
+.alerts-alert-copy span,
+.alerts-detail-copy p,
+.alerts-detail-field span,
+.alerts-detail-recommendation span,
+.alerts-detail-recommendation p {
+  color: #8fa0c1;
+}
+
+.alerts-toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 180px 180px 188px;
+  gap: 12px;
+}
+
+.alerts-table {
+  width: 100%;
+  min-width: 980px;
+  border-collapse: collapse;
+}
+
+.alerts-table th,
+.alerts-table td {
+  text-align: left;
+  padding: 14px 12px;
+  border-top: 1px solid rgba(47, 59, 88, 0.72);
+  vertical-align: middle;
+}
+
+.alerts-table th {
+  color: #8fa0c1;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.alerts-table tbody tr {
+  cursor: pointer;
+  transition: background 140ms ease;
+}
+
+.alerts-table tbody tr:hover td,
+.alerts-table tbody tr.active td {
+  background: rgba(13, 20, 34, 0.84);
+}
+
+.alerts-table tbody tr.active td:first-child {
+  border-top-left-radius: 14px;
+  border-bottom-left-radius: 14px;
+}
+
+.alerts-table tbody tr.active td:last-child {
+  border-top-right-radius: 14px;
+  border-bottom-right-radius: 14px;
+}
+
+.alerts-alert-cell,
+.alerts-detail-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.alerts-alert-copy,
+.alerts-detail-copy {
+  min-width: 0;
+}
+
+.alerts-alert-copy strong,
+.alerts-detail-copy strong,
+.alerts-detail-field strong {
+  display: block;
+}
+
+.alert-icon-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid rgba(62, 75, 111, 0.45);
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+}
+
+.alert-icon-badge.compact {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+}
+
+.alert-icon-badge.large {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+}
+
+.alert-icon-badge.tone-purple {
+  background: rgba(126, 91, 255, 0.16);
+  color: #cfbfff;
+}
+
+.alert-icon-badge.tone-amber {
+  background: rgba(255, 184, 71, 0.14);
+  color: #ffcd69;
+}
+
+.alert-icon-badge.tone-red {
+  background: rgba(255, 93, 114, 0.16);
+  color: #ff9daa;
+}
+
+.alert-icon-badge.tone-green {
+  background: rgba(46, 211, 155, 0.14);
+  color: #57dda9;
+}
+
+.alert-icon-badge.tone-blue {
+  background: rgba(47, 110, 249, 0.16);
+  color: #8ab4ff;
+}
+
+.alert-state-pill {
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.83rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.alert-state-pill.violet {
+  background: rgba(126, 91, 255, 0.14);
+  color: #cfbfff;
+}
+
+.alert-state-pill.blue {
+  background: rgba(47, 110, 249, 0.14);
+  color: #8ab4ff;
+}
+
+.alert-state-pill.green {
+  background: rgba(46, 211, 155, 0.14);
+  color: #57dda9;
+}
+
+.alert-state-pill.muted {
+  background: rgba(128, 143, 173, 0.14);
+  color: #b3bfd8;
+}
+
+.alert-action-link {
+  color: #9d86ff;
+}
+
+.alerts-bottom-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.alerts-recent-list,
+.alerts-rules-list,
+.alerts-recommendations-list {
+  display: grid;
+  gap: 12px;
+}
+
+.alerts-recent-row,
+.alert-rule-row,
+.alert-recommendation-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.alerts-summary-stack {
+  display: grid;
+  gap: 16px;
+}
+
+.alerts-detail-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.alerts-detail-fields {
+  display: grid;
+  gap: 14px;
+}
+
+.alerts-detail-field {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  border-top: 1px solid rgba(47, 59, 88, 0.72);
+  padding-top: 14px;
+}
+
+.alerts-detail-field:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.alerts-detail-recommendation {
+  display: grid;
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(47, 59, 88, 0.72);
+}
+
+.alerts-detail-recommendation p {
+  margin: 0;
+  line-height: 1.55;
+}
+
+.alerts-detail-actions {
+  display: grid;
+  gap: 10px;
+}
+
+.alerts-ignore-button {
+  border-color: rgba(255, 93, 114, 0.24);
+  color: #ff8c9b;
+}
+
 @media (max-width: 1280px) {
   .dashboard-shell {
     grid-template-columns: 1fr;
@@ -3888,7 +4158,8 @@ svg {
   .transactions-page-grid,
   .settings-page-grid,
   .accounts-page-grid,
-  .investments-page-grid {
+  .investments-page-grid,
+  .alerts-page-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -3973,11 +4244,16 @@ svg {
   }
 
   .investments-top-grid,
-  .investments-bottom-grid {
+  .investments-bottom-grid,
+  .alerts-bottom-grid {
     grid-template-columns: 1fr;
   }
 
   .investments-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .alerts-toolbar {
     grid-template-columns: 1fr;
   }
 
@@ -4024,6 +4300,10 @@ svg {
 
   .investments-table {
     min-width: 920px;
+  }
+
+  .alerts-table {
+    min-width: 900px;
   }
 
   .report-donut-layout,
@@ -4092,6 +4372,7 @@ svg {
   .goals-metrics-grid,
   .accounts-metrics-grid,
   .investments-metrics-grid,
+  .alerts-metrics-grid,
   .settings-wide-row,
   .settings-security-row,
   .settings-list-row,
@@ -4161,7 +4442,13 @@ svg {
   .investments-detail-title,
   .investments-header-actions,
   .investments-performance-row,
-  .investments-income-row {
+  .investments-income-row,
+  .alerts-header-actions,
+  .alerts-recent-row,
+  .alert-rule-row,
+  .alert-recommendation-card,
+  .alerts-detail-title,
+  .alerts-detail-field {
     display: grid;
     grid-template-columns: 1fr;
   }

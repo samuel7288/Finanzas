@@ -55,6 +55,15 @@ export type InvestmentTabId =
   | "movements"
   | "performance"
   | "objectives";
+export type AlertTabId =
+  | "all"
+  | "purchases"
+  | "budgets"
+  | "accounts"
+  | "investments"
+  | "reminders"
+  | "security";
+export type AlertStateId = "new" | "viewed" | "resolved" | "ignored" | "snoozed";
 
 export interface Transaction {
   id: string;
@@ -763,4 +772,86 @@ export interface InvestmentsPageModel {
   worstPerformers: InvestmentPerformanceItemData[];
   upcomingIncome: InvestmentIncomeItemData[];
   contributions: InvestmentContributionItemData[];
+}
+
+export interface AlertTabData {
+  id: AlertTabId;
+  label: string;
+}
+
+export interface AlertMetricData {
+  id: string;
+  label: string;
+  value: string;
+  helper: string;
+  icon: string;
+  accent: string;
+}
+
+export interface AlertSummarySliceData {
+  id: string;
+  label: string;
+  countLabel: string;
+  percentageLabel: string;
+  color: string;
+  value: number;
+}
+
+export interface AlertDetailFieldData {
+  label: string;
+  value: string;
+}
+
+export interface AlertRowData {
+  id: string;
+  tab: Exclude<AlertTabId, "all">;
+  icon: string;
+  iconTone: string;
+  title: string;
+  description: string;
+  categoryLabel: string;
+  categoryTone: string;
+  priority: "high" | "medium" | "low";
+  priorityLabel: string;
+  priorityTone: "danger" | "warning" | "success";
+  state: AlertStateId;
+  stateLabel: string;
+  stateTone: "violet" | "blue" | "green" | "muted";
+  dateLabel: string;
+  createdAt: string;
+  actionLabel: string;
+  detail: {
+    fields: AlertDetailFieldData[];
+    recommendation: string;
+  };
+}
+
+export interface AlertRuleData {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  iconTone: string;
+  enabled: boolean;
+}
+
+export interface AlertRecommendationData {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  iconTone: string;
+}
+
+export interface AlertsPageModel {
+  tabs: AlertTabData[];
+  metrics: AlertMetricData[];
+  rows: AlertRowData[];
+  priorityOptions: string[];
+  statusOptions: string[];
+  sortOptions: string[];
+  prioritySummary: AlertSummarySliceData[];
+  typeSummary: AlertSummarySliceData[];
+  rules: AlertRuleData[];
+  recommendations: AlertRecommendationData[];
 }

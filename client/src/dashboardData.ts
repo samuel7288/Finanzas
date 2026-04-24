@@ -8,6 +8,13 @@ import {
   AccountRowData,
   AccountsPageModel,
   AccountTabData,
+  AlertMetricData,
+  AlertRecommendationData,
+  AlertRowData,
+  AlertRuleData,
+  AlertsPageModel,
+  AlertSummarySliceData,
+  AlertTabData,
   AppShellModel,
   BudgetAdviceData,
   BudgetAlertData,
@@ -635,6 +642,16 @@ const investmentTabs: InvestmentTabData[] = [
   { id: "objectives", label: "Objetivos" }
 ];
 
+const alertTabs: AlertTabData[] = [
+  { id: "all", label: "Todas" },
+  { id: "purchases", label: "Compras" },
+  { id: "budgets", label: "Presupuestos" },
+  { id: "accounts", label: "Cuentas" },
+  { id: "investments", label: "Inversiones" },
+  { id: "reminders", label: "Recordatorios" },
+  { id: "security", label: "Seguridad" }
+];
+
 const accountsSeed: Array<{
   id: string;
   name: string;
@@ -1102,6 +1119,316 @@ const investmentsSeed: Array<{
         "Mantener limite acotado dentro del portafolio."
       ]
     }
+  }
+];
+
+const alertRowsSeed: AlertRowData[] = [
+  {
+    id: "alert-purchase",
+    tab: "purchases",
+    icon: "gmail",
+    iconTone: "tone-purple",
+    title: "Compra detectada en Gmail",
+    description: "Se detecto una nueva compra en Amazon por $1,299.00",
+    categoryLabel: "Compras",
+    categoryTone: "tone-blue",
+    priority: "medium",
+    priorityLabel: "Media",
+    priorityTone: "warning",
+    state: "new",
+    stateLabel: "Nueva",
+    stateTone: "violet",
+    dateLabel: "Hoy, 9:32 AM",
+    createdAt: "2024-05-24T09:32:00Z",
+    actionLabel: "Revisar compra",
+    detail: {
+      fields: [
+        { label: "Origen", value: "Gmail" },
+        { label: "Categoria", value: "Compras" },
+        { label: "Comercio", value: "Amazon.com" },
+        { label: "Monto", value: "$1,299.00" },
+        { label: "Fecha", value: "Hoy, 9:32 AM" }
+      ],
+      recommendation: "Revisa la compra detectada y confirma si deseas registrarla automaticamente."
+    }
+  },
+  {
+    id: "alert-budget",
+    tab: "budgets",
+    icon: "warning",
+    iconTone: "tone-amber",
+    title: "Entretenimiento supero el 90% del presupuesto",
+    description: "Llevas gastado $1,827.50 de $2,000.00 en la categoria Entretenimiento este mes.",
+    categoryLabel: "Presupuestos",
+    categoryTone: "tone-blue",
+    priority: "high",
+    priorityLabel: "Alta",
+    priorityTone: "danger",
+    state: "new",
+    stateLabel: "Nueva",
+    stateTone: "violet",
+    dateLabel: "Hoy, 8:15 AM",
+    createdAt: "2024-05-24T08:15:00Z",
+    actionLabel: "Ver presupuesto",
+    detail: {
+      fields: [
+        { label: "Origen", value: "Presupuestos" },
+        { label: "Categoria", value: "Entretenimiento" },
+        { label: "Periodo", value: "Mayo 2024" },
+        { label: "Presupuesto", value: "$2,000.00" },
+        { label: "Gastado", value: "$1,827.50 (91.4%)" },
+        { label: "Fecha", value: "Hoy, 8:15 AM" }
+      ],
+      recommendation: "Revisa tus gastos recientes y ajusta tu presupuesto si es necesario."
+    }
+  },
+  {
+    id: "alert-low-balance",
+    tab: "accounts",
+    icon: "accounts",
+    iconTone: "tone-red",
+    title: "Saldo bajo en Cuenta de Nomina",
+    description: "Tu saldo actual es $1,250.75",
+    categoryLabel: "Cuentas",
+    categoryTone: "tone-muted",
+    priority: "high",
+    priorityLabel: "Alta",
+    priorityTone: "danger",
+    state: "viewed",
+    stateLabel: "Vista",
+    stateTone: "blue",
+    dateLabel: "Ayer, 11:47 PM",
+    createdAt: "2024-05-23T23:47:00Z",
+    actionLabel: "Ver cuenta",
+    detail: {
+      fields: [
+        { label: "Origen", value: "Cuentas" },
+        { label: "Cuenta", value: "Cuenta de Nomina" },
+        { label: "Saldo actual", value: "$1,250.75" },
+        { label: "Umbral", value: "$1,500.00" },
+        { label: "Fecha", value: "Ayer, 11:47 PM" }
+      ],
+      recommendation: "Verifica si necesitas transferir fondos o ajustar tus alertas de saldo minimo."
+    }
+  },
+  {
+    id: "alert-unusual",
+    tab: "accounts",
+    icon: "alerts",
+    iconTone: "tone-amber",
+    title: "Movimiento inusual detectado",
+    description: "Se detecto un cargo inusual en tu tarjeta **** 4321",
+    categoryLabel: "Cuentas",
+    categoryTone: "tone-muted",
+    priority: "high",
+    priorityLabel: "Alta",
+    priorityTone: "danger",
+    state: "new",
+    stateLabel: "Nueva",
+    stateTone: "violet",
+    dateLabel: "Ayer, 6:21 PM",
+    createdAt: "2024-05-23T18:21:00Z",
+    actionLabel: "Revisar movimiento",
+    detail: {
+      fields: [
+        { label: "Origen", value: "Monitoreo de cuentas" },
+        { label: "Cuenta", value: "Tarjeta **** 4321" },
+        { label: "Movimiento", value: "$640.00" },
+        { label: "Comercio", value: "Cargo no habitual" },
+        { label: "Fecha", value: "Ayer, 6:21 PM" }
+      ],
+      recommendation: "Confirma si reconoces este movimiento y marca la alerta como resuelta si todo esta en orden."
+    }
+  },
+  {
+    id: "alert-dividends",
+    tab: "investments",
+    icon: "investments",
+    iconTone: "tone-green",
+    title: "Dividendos proximos",
+    description: "Apple Inc. (AAPL) pagara dividendos el 15 Jun 2024",
+    categoryLabel: "Inversiones",
+    categoryTone: "tone-green",
+    priority: "low",
+    priorityLabel: "Baja",
+    priorityTone: "success",
+    state: "viewed",
+    stateLabel: "Vista",
+    stateTone: "blue",
+    dateLabel: "21 May, 3:05 PM",
+    createdAt: "2024-05-21T15:05:00Z",
+    actionLabel: "Ver inversion",
+    detail: {
+      fields: [
+        { label: "Origen", value: "Inversiones" },
+        { label: "Activo", value: "Apple Inc. (AAPL)" },
+        { label: "Tipo", value: "Dividendo" },
+        { label: "Fecha de pago", value: "15 Jun 2024" },
+        { label: "Monto estimado", value: "$148.20" }
+      ],
+      recommendation: "Mantente atento al calendario de dividendos y reinvierte si encaja con tu estrategia."
+    }
+  },
+  {
+    id: "alert-goal",
+    tab: "reminders",
+    icon: "goals",
+    iconTone: "tone-blue",
+    title: "Meta 'Viaje a Cancun' atrasada",
+    description: "Vas 2 meses detras del plan de ahorro.",
+    categoryLabel: "Metas",
+    categoryTone: "tone-violet",
+    priority: "medium",
+    priorityLabel: "Media",
+    priorityTone: "warning",
+    state: "new",
+    stateLabel: "Nueva",
+    stateTone: "violet",
+    dateLabel: "21 May, 10:10 AM",
+    createdAt: "2024-05-21T10:10:00Z",
+    actionLabel: "Ver meta",
+    detail: {
+      fields: [
+        { label: "Origen", value: "Metas" },
+        { label: "Meta", value: "Viaje a Cancun" },
+        { label: "Ahorro planeado", value: "$1,500.00 / mes" },
+        { label: "Desfase", value: "2 meses" },
+        { label: "Fecha objetivo", value: "30 Nov 2024" }
+      ],
+      recommendation: "Revisa tu aporte mensual o mueve parte de tus ahorros para recuperar el ritmo."
+    }
+  },
+  {
+    id: "alert-card-due",
+    tab: "reminders",
+    icon: "calendar",
+    iconTone: "tone-purple",
+    title: "Pago de tarjeta por vencer",
+    description: "Tu tarjeta BBVA **** 1234 vence el 25 May 2024",
+    categoryLabel: "Recordatorios",
+    categoryTone: "tone-muted",
+    priority: "medium",
+    priorityLabel: "Media",
+    priorityTone: "warning",
+    state: "viewed",
+    stateLabel: "Vista",
+    stateTone: "blue",
+    dateLabel: "20 May, 9:00 AM",
+    createdAt: "2024-05-20T09:00:00Z",
+    actionLabel: "Ver recordatorio",
+    detail: {
+      fields: [
+        { label: "Origen", value: "Recordatorios" },
+        { label: "Cuenta", value: "BBVA **** 1234" },
+        { label: "Tipo", value: "Pago de tarjeta" },
+        { label: "Fecha de vencimiento", value: "25 May 2024" },
+        { label: "Monto esperado", value: "$560.00" }
+      ],
+      recommendation: "Agenda el pago antes de la fecha de vencimiento para evitar cargos extras."
+    }
+  },
+  {
+    id: "alert-security",
+    tab: "security",
+    icon: "shield",
+    iconTone: "tone-green",
+    title: "Inicio de sesion nuevo",
+    description: "Se detecto un inicio de sesion desde un nuevo dispositivo",
+    categoryLabel: "Seguridad",
+    categoryTone: "tone-muted",
+    priority: "high",
+    priorityLabel: "Alta",
+    priorityTone: "danger",
+    state: "new",
+    stateLabel: "Nueva",
+    stateTone: "violet",
+    dateLabel: "20 May, 7:22 AM",
+    createdAt: "2024-05-20T07:22:00Z",
+    actionLabel: "Revisar actividad",
+    detail: {
+      fields: [
+        { label: "Origen", value: "Seguridad" },
+        { label: "Dispositivo", value: "Chrome en Windows" },
+        { label: "Ubicacion", value: "San Salvador" },
+        { label: "Estado", value: "Nuevo acceso" },
+        { label: "Fecha", value: "20 May, 7:22 AM" }
+      ],
+      recommendation: "Revisa tu actividad reciente y cierra sesiones si no reconoces este acceso."
+    }
+  }
+];
+
+const alertPrioritySummary: AlertSummarySliceData[] = [
+  { id: "high", label: "Alta", countLabel: "5", percentageLabel: "(22%)", color: "#e4556b", value: 5 },
+  { id: "medium", label: "Media", countLabel: "12", percentageLabel: "(52%)", color: "#ffb347", value: 12 },
+  { id: "low", label: "Baja", countLabel: "6", percentageLabel: "(26%)", color: "#34c97e", value: 6 }
+];
+
+const alertTypeSummary: AlertSummarySliceData[] = [
+  { id: "purchases", label: "Compras", countLabel: "6", percentageLabel: "(26%)", color: "#6d48ff", value: 6 },
+  { id: "budgets", label: "Presupuestos", countLabel: "5", percentageLabel: "(22%)", color: "#e4556b", value: 5 },
+  { id: "accounts", label: "Cuentas", countLabel: "5", percentageLabel: "(22%)", color: "#ffb347", value: 5 },
+  { id: "investments", label: "Inversiones", countLabel: "3", percentageLabel: "(13%)", color: "#34c97e", value: 3 },
+  { id: "reminders", label: "Recordatorios", countLabel: "2", percentageLabel: "(9%)", color: "#7d6bff", value: 2 },
+  { id: "security", label: "Seguridad", countLabel: "2", percentageLabel: "(8%)", color: "#7f8fa9", value: 2 }
+];
+
+const alertRules: AlertRuleData[] = [
+  {
+    id: "rule-budget",
+    title: "Presupuesto entretenimiento",
+    description: "Alerta cuando supere el 90%",
+    icon: "budgets",
+    iconTone: "tone-amber",
+    enabled: true
+  },
+  {
+    id: "rule-balance",
+    title: "Saldo bajo en cuentas",
+    description: "Alertar cuando el saldo sea menor a $1,500",
+    icon: "accounts",
+    iconTone: "tone-red",
+    enabled: true
+  },
+  {
+    id: "rule-gmail",
+    title: "Compras en Gmail",
+    description: "Detectar y alertar nuevas compras",
+    icon: "gmail",
+    iconTone: "tone-purple",
+    enabled: true
+  },
+  {
+    id: "rule-unusual",
+    title: "Movimientos inusuales",
+    description: "Alertar cargos fuera de lo normal",
+    icon: "alerts",
+    iconTone: "tone-blue",
+    enabled: false
+  }
+];
+
+const alertRecommendations: AlertRecommendationData[] = [
+  {
+    id: "recommendation-budget",
+    title: "Ajusta tu presupuesto de Entretenimiento",
+    description: "Has excedido el 90% en 2 de los ultimos 3 meses.",
+    icon: "budgets",
+    iconTone: "tone-amber"
+  },
+  {
+    id: "recommendation-investments",
+    title: "Activa alertas de inversiones",
+    description: "Te recomendamos alertas de rendimiento y dividendos.",
+    icon: "investments",
+    iconTone: "tone-green"
+  },
+  {
+    id: "recommendation-subscriptions",
+    title: "Revisa tus suscripciones",
+    description: "Puedes estar gastando de mas en servicios.",
+    icon: "alerts",
+    iconTone: "tone-red"
   }
 ];
 
@@ -2000,6 +2327,56 @@ export function buildInvestmentsPageModel(): InvestmentsPageModel {
     worstPerformers,
     upcomingIncome,
     contributions
+  };
+}
+
+export function buildAlertsPageModel(): AlertsPageModel {
+  const metrics: AlertMetricData[] = [
+    {
+      id: "active",
+      label: "Total de alertas activas",
+      value: "23",
+      helper: "+5 desde ayer",
+      icon: "alerts",
+      accent: "#7d4dff"
+    },
+    {
+      id: "critical",
+      label: "Criticas",
+      value: "5",
+      helper: "Requieren atencion",
+      icon: "warning",
+      accent: "#ff5d72"
+    },
+    {
+      id: "pending",
+      label: "Pendientes",
+      value: "12",
+      helper: "Esperando accion",
+      icon: "calendar",
+      accent: "#f2a93b"
+    },
+    {
+      id: "resolved",
+      label: "Resueltas hoy",
+      value: "8",
+      helper: "Buen trabajo",
+      icon: "shield",
+      accent: "#34c97e"
+    }
+  ];
+
+  return {
+    tabs: alertTabs,
+    metrics,
+    rows: alertRowsSeed,
+    priorityOptions: ["Todas las prioridades", "Alta", "Media", "Baja"],
+    statusOptions: ["Todos los estados", "Nueva", "Vista", "Resuelta", "Ignorada", "Pospuesta"],
+    sortOptions: ["Mas recientes", "Prioridad", "Sin resolver"],
+    prioritySummary: alertPrioritySummary,
+    typeSummary: alertTypeSummary,
+    rules: alertRules,
+    recommendations: alertRecommendations
   };
 }
 
