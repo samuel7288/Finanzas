@@ -8,6 +8,7 @@ interface PageHeaderProps {
   leadingIcon?: IconName;
   actions?: ReactNode;
   showNotifications?: boolean;
+  dateControl?: ReactNode;
 }
 
 export function PageHeader({
@@ -16,7 +17,8 @@ export function PageHeader({
   dateRangeLabel,
   leadingIcon,
   actions,
-  showNotifications = true
+  showNotifications = true,
+  dateControl
 }: PageHeaderProps) {
   return (
     <header className="dashboard-topbar">
@@ -33,10 +35,12 @@ export function PageHeader({
       </div>
 
       <div className="topbar-actions">
-        <button className="date-button">
-          <span>{dateRangeLabel}</span>
-          <Icon name="calendar" />
-        </button>
+        {dateControl ?? (
+          <button className="date-button">
+            <span>{dateRangeLabel}</span>
+            <Icon name="calendar" />
+          </button>
+        )}
 
         {actions}
 

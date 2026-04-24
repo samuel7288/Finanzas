@@ -22,6 +22,7 @@ export type SettingsTabId =
   | "notifications"
   | "security"
   | "preferences";
+export type BudgetViewTabId = "general" | "daily";
 
 export interface Transaction {
   id: string;
@@ -331,4 +332,94 @@ export interface SettingsPageModel {
   services: ServiceConnectionData[];
   notifications: NotificationPreferenceData[];
   securityItems: SecurityItemData[];
+}
+
+export interface BudgetMetricData {
+  id: string;
+  label: string;
+  value: string;
+  helper: string;
+  icon: string;
+  accent: string;
+}
+
+export interface BudgetRowData {
+  id: string;
+  category: string;
+  subtitle: string;
+  budgetLabel: string;
+  spentLabel: string;
+  remainingLabel: string;
+  remainingPositive: boolean;
+  progress: number;
+  statusLabel: string;
+  statusTone: "success" | "warning" | "danger";
+  icon: string;
+  tone: string;
+}
+
+export interface BudgetDailyRowData {
+  id: string;
+  dateLabel: string;
+  spentLabel: string;
+  targetLabel: string;
+  progress: number;
+  statusLabel: string;
+  statusTone: "success" | "warning" | "danger";
+}
+
+export interface BudgetSummaryData {
+  totalLabel: string;
+  spentLabel: string;
+  remainingLabel: string;
+  spentProgress: number;
+  daysRemainingLabel: string;
+}
+
+export interface BudgetAlertData {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  tone: "warning" | "danger";
+}
+
+export interface BudgetAdviceData {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  tone: "green" | "violet" | "blue";
+}
+
+export interface BudgetQuickActionData {
+  id: string;
+  label: string;
+  icon: string;
+}
+
+export interface BudgetChartRowData {
+  id: string;
+  label: string;
+  budget: number;
+  spent: number;
+}
+
+export interface BudgetViewTabData {
+  id: BudgetViewTabId;
+  label: string;
+}
+
+export interface BudgetsPageModel {
+  monthLabel: string;
+  viewTabs: BudgetViewTabData[];
+  metrics: BudgetMetricData[];
+  rows: BudgetRowData[];
+  dailyRows: BudgetDailyRowData[];
+  accountOptions: string[];
+  summary: BudgetSummaryData;
+  alerts: BudgetAlertData[];
+  advice: BudgetAdviceData[];
+  quickActions: BudgetQuickActionData[];
+  chartRows: BudgetChartRowData[];
 }

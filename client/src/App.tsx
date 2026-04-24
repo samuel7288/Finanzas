@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { AppLayout } from "./components/AppLayout";
+import { BudgetsPage } from "./components/BudgetsPage";
 import { GmailPage } from "./components/GmailPage";
 import { LoginScreen } from "./components/LoginScreen";
 import { PlaceholderPage } from "./components/PlaceholderPage";
@@ -8,6 +9,7 @@ import { SummaryPage } from "./components/SummaryPage";
 import { TransactionsPage } from "./components/TransactionsPage";
 import {
   buildAppShellModel,
+  buildBudgetsPageModel,
   buildGmailPageModel,
   buildSettingsPageModel,
   buildSummaryModel,
@@ -57,6 +59,7 @@ function App() {
     () => buildSettingsPageModel(gmailStatus),
     [gmailStatus]
   );
+  const budgetsPageModel = useMemo(() => buildBudgetsPageModel(), []);
 
   async function loadDashboard() {
     setError("");
@@ -283,6 +286,11 @@ function App() {
           loading={loading}
           onConnectGmail={connectGmail}
           onSyncGmail={syncGmail}
+        />
+      ) : currentRoute === "budgets" ? (
+        <BudgetsPage
+          model={budgetsPageModel}
+          loading={loading}
         />
       ) : (
         <PlaceholderPage route={currentRoute} />

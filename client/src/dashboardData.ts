@@ -1,7 +1,17 @@
 import {
   AppRouteId,
   AppShellModel,
+  BudgetAdviceData,
+  BudgetAlertData,
+  BudgetChartRowData,
+  BudgetDailyRowData,
   BudgetItemData,
+  BudgetMetricData,
+  BudgetQuickActionData,
+  BudgetRowData,
+  BudgetsPageModel,
+  BudgetSummaryData,
+  BudgetViewTabData,
   CategoryItemData,
   GmailPageModel,
   GmailRowData,
@@ -273,6 +283,197 @@ const themeOptions: ThemeOptionData[] = [
   { id: "system", label: "Sistema", description: "Segun tu dispositivo" }
 ];
 
+const budgetViewTabs: BudgetViewTabData[] = [
+  { id: "general", label: "Vista general" },
+  { id: "daily", label: "Detalle por dia" }
+];
+
+const budgetSeed: Array<{
+  id: string;
+  category: string;
+  subtitle: string;
+  budget: number;
+  spent: number;
+  icon: string;
+  tone: string;
+}> = [
+  {
+    id: "food",
+    category: "Alimentacion",
+    subtitle: "Comida y supermercado",
+    budget: 4000,
+    spent: 2850.4,
+    icon: "utensils",
+    tone: "tone-green"
+  },
+  {
+    id: "transport",
+    category: "Transporte",
+    subtitle: "Gasolina, transporte publico, apps",
+    budget: 2500,
+    spent: 1965.5,
+    icon: "car",
+    tone: "tone-blue"
+  },
+  {
+    id: "entertainment",
+    category: "Entretenimiento",
+    subtitle: "Streaming, cine, juegos, salidas",
+    budget: 1800,
+    spent: 1672.8,
+    icon: "playCircle",
+    tone: "tone-red"
+  },
+  {
+    id: "services",
+    category: "Servicios",
+    subtitle: "Luz, agua, internet, telefono",
+    budget: 2200,
+    spent: 2045.3,
+    icon: "zap",
+    tone: "tone-gold"
+  },
+  {
+    id: "health",
+    category: "Salud",
+    subtitle: "Medicamentos, consultas, gimnasio",
+    budget: 1200,
+    spent: 820.9,
+    icon: "heart",
+    tone: "tone-pink"
+  },
+  {
+    id: "shopping",
+    category: "Compras",
+    subtitle: "Ropa, electronicos, hogar",
+    budget: 2000,
+    spent: 980.6,
+    icon: "bag",
+    tone: "tone-purple"
+  },
+  {
+    id: "education",
+    category: "Educacion",
+    subtitle: "Cursos, libros, suscripciones",
+    budget: 800,
+    spent: 115,
+    icon: "book",
+    tone: "tone-cyan"
+  },
+  {
+    id: "savings",
+    category: "Ahorro e inversiones",
+    subtitle: "Ahorros, inversiones, retiros",
+    budget: 5500,
+    spent: 0,
+    icon: "investments",
+    tone: "tone-green"
+  }
+];
+
+const budgetDailySeed: BudgetDailyRowData[] = [
+  {
+    id: "day-24",
+    dateLabel: "24 May",
+    spentLabel: "$380.00",
+    targetLabel: "$520.00",
+    progress: 0.73,
+    statusLabel: "Bien",
+    statusTone: "success"
+  },
+  {
+    id: "day-25",
+    dateLabel: "25 May",
+    spentLabel: "$460.00",
+    targetLabel: "$520.00",
+    progress: 0.88,
+    statusLabel: "Bien",
+    statusTone: "success"
+  },
+  {
+    id: "day-26",
+    dateLabel: "26 May",
+    spentLabel: "$540.00",
+    targetLabel: "$520.00",
+    progress: 1,
+    statusLabel: "En riesgo",
+    statusTone: "warning"
+  },
+  {
+    id: "day-27",
+    dateLabel: "27 May",
+    spentLabel: "$610.00",
+    targetLabel: "$520.00",
+    progress: 1,
+    statusLabel: "Excedido",
+    statusTone: "danger"
+  },
+  {
+    id: "day-28",
+    dateLabel: "28 May",
+    spentLabel: "$410.00",
+    targetLabel: "$520.00",
+    progress: 0.79,
+    statusLabel: "Bien",
+    statusTone: "success"
+  },
+  {
+    id: "day-29",
+    dateLabel: "29 May",
+    spentLabel: "$485.00",
+    targetLabel: "$520.00",
+    progress: 0.93,
+    statusLabel: "En riesgo",
+    statusTone: "warning"
+  }
+];
+
+const budgetAlerts: BudgetAlertData[] = [
+  {
+    id: "alert-entertainment",
+    title: "Entretenimiento",
+    description: "Has alcanzado el 93% de tu presupuesto.",
+    icon: "warning",
+    tone: "warning"
+  },
+  {
+    id: "alert-services",
+    title: "Servicios",
+    description: "Has alcanzado el 93% de tu presupuesto.",
+    icon: "warning",
+    tone: "warning"
+  }
+];
+
+const budgetAdvice: BudgetAdviceData[] = [
+  {
+    id: "advice-food",
+    title: "Vas por buen camino",
+    description: "Has gastado 18% menos que el mes pasado en Alimentacion.",
+    icon: "bag",
+    tone: "green"
+  },
+  {
+    id: "advice-review",
+    title: "Revisa esta categoria",
+    description: "Entretenimiento ha superado tu promedio habitual.",
+    icon: "budgets",
+    tone: "violet"
+  },
+  {
+    id: "advice-save",
+    title: "Ahorra mas",
+    description: "Tienes dinero disponible para asignar o ahorrar este mes.",
+    icon: "investments",
+    tone: "blue"
+  }
+];
+
+const budgetQuickActions: BudgetQuickActionData[] = [
+  { id: "new", label: "Crear nuevo presupuesto", icon: "plus" },
+  { id: "copy", label: "Copiar presupuesto del mes pasado", icon: "copy" }
+];
+
 const balanceSeries = [8, 14, 13, 26, 24, 38, 40, 48, 50, 55, 46, 44, 53, 51, 56, 58, 62, 78, 82, 95];
 
 const seededCategories: CategoryItemData[] = [
@@ -539,6 +740,78 @@ export function buildSettingsPageModel(
   };
 }
 
+export function buildBudgetsPageModel(): BudgetsPageModel {
+  const rows = budgetSeed.map((item) => buildBudgetRow(item));
+  const totalBudget = budgetSeed.reduce((sum, item) => sum + item.budget, 0);
+  const totalSpent = budgetSeed.reduce((sum, item) => sum + item.spent, 0);
+  const remaining = totalBudget - totalSpent;
+  const riskCount = rows.filter((row) => row.statusTone !== "success").length;
+
+  const metrics: BudgetMetricData[] = [
+    {
+      id: "total",
+      label: "Presupuesto total",
+      value: formatMoney(totalBudget, "USD"),
+      helper: "Mensual",
+      icon: "budgets",
+      accent: "#7d4dff"
+    },
+    {
+      id: "spent",
+      label: "Gastado",
+      value: formatMoney(totalSpent, "USD"),
+      helper: `${Math.round((totalSpent / totalBudget) * 100)}% del presupuesto`,
+      icon: "car",
+      accent: "#2f6ef9"
+    },
+    {
+      id: "remaining",
+      label: "Restante",
+      value: formatMoney(remaining, "USD"),
+      helper: `${Math.round((remaining / totalBudget) * 100)}% del presupuesto`,
+      icon: "bag",
+      accent: "#1fd1b2"
+    },
+    {
+      id: "risk",
+      label: "En riesgo",
+      value: `${riskCount} categorias`,
+      helper: "Superan el 80%",
+      icon: "warning",
+      accent: "#f2a93b"
+    }
+  ];
+
+  const summary: BudgetSummaryData = {
+    totalLabel: formatMoney(totalBudget, "USD"),
+    spentLabel: formatMoney(totalSpent, "USD"),
+    remainingLabel: formatMoney(remaining, "USD"),
+    spentProgress: totalSpent / totalBudget,
+    daysRemainingLabel: "12 dias"
+  };
+
+  const chartRows: BudgetChartRowData[] = budgetSeed.map((item) => ({
+    id: item.id,
+    label: item.category,
+    budget: item.budget,
+    spent: item.spent
+  }));
+
+  return {
+    monthLabel: "Mayo 2024",
+    viewTabs: budgetViewTabs,
+    metrics,
+    rows,
+    dailyRows: budgetDailySeed,
+    accountOptions: ["Todas las cuentas", ...accountOptions],
+    summary,
+    alerts: budgetAlerts,
+    advice: budgetAdvice,
+    quickActions: budgetQuickActions,
+    chartRows
+  };
+}
+
 function buildReviewItems(transactions: Transaction[]): ReviewItemData[] {
   return transactions
     .filter((transaction) => transaction.source === "gmail" && transaction.status === "pending")
@@ -689,6 +962,34 @@ function buildTransactionRow(transaction: Transaction): TransactionRowData {
       ],
       products
     }
+  };
+}
+
+function buildBudgetRow(item: {
+  id: string;
+  category: string;
+  subtitle: string;
+  budget: number;
+  spent: number;
+  icon: string;
+  tone: string;
+}): BudgetRowData {
+  const remaining = item.budget - item.spent;
+  const progress = item.budget === 0 ? 0 : item.spent / item.budget;
+
+  return {
+    id: item.id,
+    category: item.category,
+    subtitle: item.subtitle,
+    budgetLabel: formatMoney(item.budget, "USD"),
+    spentLabel: formatMoney(item.spent, "USD"),
+    remainingLabel: formatMoney(Math.abs(remaining), "USD"),
+    remainingPositive: remaining >= 0,
+    progress,
+    statusLabel: getBudgetStatusLabel(progress),
+    statusTone: getBudgetStatusTone(progress),
+    icon: item.icon,
+    tone: item.tone
   };
 }
 
@@ -919,6 +1220,18 @@ function getTransactionStatusTone(
   if (status === "approved") return "success";
   if (status === "ignored") return "muted";
   return "warning";
+}
+
+function getBudgetStatusLabel(progress: number) {
+  if (progress >= 1) return "Excedido";
+  if (progress >= 0.8) return "En riesgo";
+  return "Bien";
+}
+
+function getBudgetStatusTone(progress: number): BudgetRowData["statusTone"] {
+  if (progress >= 1) return "danger";
+  if (progress >= 0.8) return "warning";
+  return "success";
 }
 
 function formatRelativeDate(value: string) {
