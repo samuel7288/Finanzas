@@ -3334,6 +3334,274 @@ svg {
   color: #b8c7e4;
 }
 
+.accounts-page-stack {
+  display: grid;
+  gap: 16px;
+}
+
+.accounts-page-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 16px;
+  align-items: start;
+}
+
+.accounts-main-column,
+.accounts-detail-column,
+.accounts-insights-column {
+  display: grid;
+  gap: 16px;
+}
+
+.accounts-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.account-metric-card {
+  min-height: 126px;
+  display: grid;
+  gap: 14px;
+}
+
+.account-metric-helper,
+.accounts-account-copy span,
+.accounts-detail-copy span,
+.accounts-detail-meta span,
+.accounts-info-row span {
+  color: #8fa0c1;
+}
+
+.accounts-content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 16px;
+  align-items: start;
+}
+
+.accounts-table-card,
+.accounts-side-card,
+.accounts-detail-card {
+  display: grid;
+  gap: 16px;
+}
+
+.accounts-toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px 116px;
+  gap: 12px;
+}
+
+.accounts-table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+}
+
+.accounts-table th,
+.accounts-table td {
+  text-align: left;
+  padding: 14px 12px;
+  border-top: 1px solid rgba(47, 59, 88, 0.72);
+  vertical-align: middle;
+}
+
+.accounts-table th {
+  color: #8fa0c1;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.accounts-table tbody tr {
+  cursor: pointer;
+  transition: background 140ms ease;
+}
+
+.accounts-table tbody tr:hover td,
+.accounts-table tbody tr.active td {
+  background: rgba(13, 20, 34, 0.84);
+}
+
+.accounts-table tbody tr.active td:first-child {
+  border-top-left-radius: 14px;
+  border-bottom-left-radius: 14px;
+}
+
+.accounts-table tbody tr.active td:last-child {
+  border-top-right-radius: 14px;
+  border-bottom-right-radius: 14px;
+}
+
+.accounts-account-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.accounts-account-copy,
+.accounts-detail-copy {
+  min-width: 0;
+}
+
+.accounts-account-copy strong,
+.accounts-detail-copy strong {
+  display: block;
+}
+
+.account-institution-badge {
+  min-width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: inline-grid;
+  place-items: center;
+  padding: 0 10px;
+  font-size: 0.78rem;
+  font-weight: 900;
+  border: 1px solid rgba(62, 75, 111, 0.45);
+}
+
+.account-institution-badge.large {
+  min-width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  font-size: 0.88rem;
+}
+
+.account-institution-badge.tone-blue {
+  background: rgba(47, 110, 249, 0.18);
+  color: #8ab4ff;
+}
+
+.account-institution-badge.tone-red {
+  background: rgba(255, 93, 114, 0.16);
+  color: #ff9daa;
+}
+
+.account-institution-badge.tone-green {
+  background: rgba(46, 211, 155, 0.14);
+  color: #57dda9;
+}
+
+.account-institution-badge.tone-violet {
+  background: rgba(151, 101, 255, 0.16);
+  color: #d4c4ff;
+}
+
+.account-institution-badge.tone-cyan {
+  background: rgba(67, 202, 255, 0.14);
+  color: #91e1ff;
+}
+
+.account-institution-badge.tone-gold {
+  background: rgba(255, 198, 70, 0.14);
+  color: #ffd476;
+}
+
+.account-institution-badge.tone-muted {
+  background: rgba(128, 143, 173, 0.14);
+  color: #a7b3ce;
+}
+
+.account-balance {
+  font-weight: 800;
+}
+
+.account-balance.positive {
+  color: #2fd39b;
+}
+
+.account-balance.negative {
+  color: #ff6b7c;
+}
+
+.accounts-distribution-stack {
+  display: grid;
+  gap: 16px;
+}
+
+.accounts-connection-list {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.accounts-connection-chip {
+  width: 54px;
+  height: 54px;
+  border: 1px solid rgba(47, 59, 88, 0.72);
+  border-radius: 14px;
+  background: rgba(10, 16, 30, 0.74);
+  display: inline-grid;
+  place-items: center;
+  padding: 0;
+}
+
+.accounts-detail-header {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.accounts-detail-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.accounts-detail-balance {
+  font-size: 2.1rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.accounts-detail-balance.positive {
+  color: #2fd39b;
+}
+
+.accounts-detail-balance.negative {
+  color: #ff6b7c;
+}
+
+.accounts-detail-meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.accounts-detail-meta strong,
+.accounts-info-row strong {
+  display: block;
+  margin-top: 4px;
+}
+
+.accounts-detail-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.accounts-info-list {
+  display: grid;
+  gap: 14px;
+}
+
+.accounts-info-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  border-top: 1px solid rgba(47, 59, 88, 0.72);
+  padding-top: 14px;
+}
+
+.accounts-info-row:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
 @media (max-width: 1280px) {
   .dashboard-shell {
     grid-template-columns: 1fr;
@@ -3351,7 +3619,8 @@ svg {
   .analytics-grid,
   .gmail-page-grid,
   .transactions-page-grid,
-  .settings-page-grid {
+  .settings-page-grid,
+  .accounts-page-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -3396,6 +3665,7 @@ svg {
 
   .budgets-layout,
   .budget-chart-layout,
+  .accounts-content-grid,
   .reports-primary-grid,
   .reports-secondary-grid,
   .goals-layout {
@@ -3414,11 +3684,19 @@ svg {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .accounts-metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .budgets-toolbar {
     grid-template-columns: 1fr;
   }
 
   .reports-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .accounts-toolbar {
     grid-template-columns: 1fr;
   }
 
@@ -3457,6 +3735,10 @@ svg {
 
   .transactions-table {
     min-width: 860px;
+  }
+
+  .accounts-table {
+    min-width: 760px;
   }
 
   .report-donut-layout,
@@ -3523,11 +3805,14 @@ svg {
   .budgets-metrics-grid,
   .reports-metrics-grid,
   .goals-metrics-grid,
+  .accounts-metrics-grid,
   .settings-wide-row,
   .settings-security-row,
   .settings-list-row,
   .settings-list-row.simple,
-  .settings-list-row.simple.notification {
+  .settings-list-row.simple.notification,
+  .accounts-detail-meta,
+  .accounts-detail-actions {
     grid-template-columns: 1fr;
   }
 
@@ -3581,6 +3866,12 @@ svg {
   .settings-main-actions,
   .settings-service-actions {
     justify-content: stretch;
+  }
+
+  .accounts-detail-title,
+  .accounts-info-row {
+    display: grid;
+    grid-template-columns: 1fr;
   }
 
   .month-control {

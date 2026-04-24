@@ -39,6 +39,15 @@ export type GoalCategoryTabId =
   | "education"
   | "home"
   | "custom";
+export type AccountTabId =
+  | "overview"
+  | "banking"
+  | "cards"
+  | "cash"
+  | "investments"
+  | "loans"
+  | "connections";
+export type AccountKind = "bank" | "card" | "cash" | "investment" | "loan";
 
 export interface Transaction {
   id: string;
@@ -571,4 +580,77 @@ export interface GoalsPageModel {
     description: string;
     ctaLabel: string;
   };
+}
+
+export interface AccountTabData {
+  id: AccountTabId;
+  label: string;
+}
+
+export interface AccountMetricData {
+  id: string;
+  label: string;
+  value: string;
+  helper: string;
+  icon: string;
+  accent: string;
+}
+
+export interface AccountDistributionSliceData {
+  id: string;
+  label: string;
+  amountLabel: string;
+  percentageLabel: string;
+  color: string;
+  value: number;
+}
+
+export interface AccountConnectionData {
+  id: string;
+  badgeLabel: string;
+  tone: string;
+}
+
+export interface AccountMovementData {
+  id: string;
+  merchant: string;
+  dateLabel: string;
+  amountLabel: string;
+  positive: boolean;
+}
+
+export interface AccountInfoFieldData {
+  label: string;
+  value: string;
+}
+
+export interface AccountRowData {
+  id: string;
+  name: string;
+  maskedNumber: string;
+  kind: AccountKind;
+  typeLabel: string;
+  typeTone: string;
+  institution: string;
+  balanceValue: number;
+  balanceLabel: string;
+  positive: boolean;
+  statusLabel: string;
+  statusTone: "success" | "muted";
+  badgeLabel: string;
+  badgeTone: string;
+  availableBalanceLabel: string;
+  accountTypeLabel: string;
+  recentMovements: AccountMovementData[];
+  infoFields: AccountInfoFieldData[];
+}
+
+export interface AccountsPageModel {
+  dateRangeLabel: string;
+  tabs: AccountTabData[];
+  metrics: AccountMetricData[];
+  rows: AccountRowData[];
+  typeOptions: string[];
+  distribution: AccountDistributionSliceData[];
+  connections: AccountConnectionData[];
 }

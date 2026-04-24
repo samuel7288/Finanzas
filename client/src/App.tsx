@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { AccountsPage } from "./components/AccountsPage";
 import { AppLayout } from "./components/AppLayout";
 import { BudgetsPage } from "./components/BudgetsPage";
 import { GmailPage } from "./components/GmailPage";
@@ -11,6 +12,7 @@ import { SummaryPage } from "./components/SummaryPage";
 import { TransactionsPage } from "./components/TransactionsPage";
 import {
   buildAppShellModel,
+  buildAccountsPageModel,
   buildBudgetsPageModel,
   buildGmailPageModel,
   buildGoalsPageModel,
@@ -64,6 +66,7 @@ function App() {
     [gmailStatus]
   );
   const budgetsPageModel = useMemo(() => buildBudgetsPageModel(), []);
+  const accountsPageModel = useMemo(() => buildAccountsPageModel(), []);
   const goalsPageModel = useMemo(() => buildGoalsPageModel(), []);
   const reportsPageModel = useMemo(
     () => buildReportsPageModel(displayTransactions),
@@ -299,6 +302,11 @@ function App() {
       ) : currentRoute === "budgets" ? (
         <BudgetsPage
           model={budgetsPageModel}
+          loading={loading}
+        />
+      ) : currentRoute === "accounts" ? (
+        <AccountsPage
+          model={accountsPageModel}
           loading={loading}
         />
       ) : currentRoute === "reports" ? (

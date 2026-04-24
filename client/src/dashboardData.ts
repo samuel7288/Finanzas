@@ -1,5 +1,13 @@
 import {
   AppRouteId,
+  AccountConnectionData,
+  AccountDistributionSliceData,
+  AccountInfoFieldData,
+  AccountKind,
+  AccountMetricData,
+  AccountRowData,
+  AccountsPageModel,
+  AccountTabData,
   AppShellModel,
   BudgetAdviceData,
   BudgetAlertData,
@@ -592,6 +600,265 @@ const goalsSeed: Array<{
   }
 ];
 
+const accountTabs: AccountTabData[] = [
+  { id: "overview", label: "Resumen" },
+  { id: "banking", label: "Cuentas bancarias" },
+  { id: "cards", label: "Tarjetas" },
+  { id: "cash", label: "Efectivo" },
+  { id: "investments", label: "Inversiones" },
+  { id: "loans", label: "Prestamos" },
+  { id: "connections", label: "Conexiones" }
+];
+
+const accountConnections: AccountConnectionData[] = [
+  { id: "bbva", badgeLabel: "BBVA", tone: "tone-blue" },
+  { id: "santander", badgeLabel: "S", tone: "tone-red" },
+  { id: "bac", badgeLabel: "BAC", tone: "tone-violet" },
+  { id: "hsbc", badgeLabel: "HSBC", tone: "tone-cyan" },
+  { id: "extra", badgeLabel: "+2", tone: "tone-muted" }
+];
+
+const accountsSeed: Array<{
+  id: string;
+  name: string;
+  maskedNumber: string;
+  kind: AccountKind;
+  typeLabel: string;
+  typeTone: string;
+  institution: string;
+  balance: number;
+  statusLabel: string;
+  statusTone: AccountRowData["statusTone"];
+  badgeLabel: string;
+  badgeTone: string;
+  availableBalance: number;
+  accountTypeLabel: string;
+  recentMovements: Array<{
+    id: string;
+    merchant: string;
+    dateLabel: string;
+    amount: number;
+    positive: boolean;
+  }>;
+  infoFields: AccountInfoFieldData[];
+}> = [
+  {
+    id: "payroll-bbva",
+    name: "Cuenta de Nomina",
+    maskedNumber: "•••• 1234",
+    kind: "bank",
+    typeLabel: "Cuenta bancaria",
+    typeTone: "tone-blue",
+    institution: "BBVA",
+    balance: 25450.75,
+    statusLabel: "Conectada",
+    statusTone: "success",
+    badgeLabel: "BBVA",
+    badgeTone: "tone-blue",
+    availableBalance: 22850.75,
+    accountTypeLabel: "Cuenta corriente",
+    recentMovements: [
+      { id: "bbva-1", merchant: "Transferencia recibida", dateLabel: "Hoy, 9:15 AM", amount: 15000, positive: true },
+      { id: "bbva-2", merchant: "Amazon.com", dateLabel: "Ayer, 8:43 PM", amount: 1299, positive: false },
+      { id: "bbva-3", merchant: "Superama", dateLabel: "Ayer, 2:15 PM", amount: 850.75, positive: false },
+      { id: "bbva-4", merchant: "Spotify", dateLabel: "21 May 2024", amount: 129, positive: false },
+      { id: "bbva-5", merchant: "Cinepolis", dateLabel: "20 May 2024", amount: 320, positive: false }
+    ],
+    infoFields: [
+      { label: "Institucion", value: "BBVA" },
+      { label: "Numero de cuenta", value: "•••• 1234" },
+      { label: "CLABE", value: "012 180 0123456789 3" },
+      { label: "Moneda", value: "USD" },
+      { label: "Ultima actualizacion", value: "Hoy, 9:30 AM" }
+    ]
+  },
+  {
+    id: "savings-santander",
+    name: "Cuenta de Ahorros",
+    maskedNumber: "•••• 5678",
+    kind: "bank",
+    typeLabel: "Cuenta bancaria",
+    typeTone: "tone-blue",
+    institution: "Santander",
+    balance: 29400,
+    statusLabel: "Conectada",
+    statusTone: "success",
+    badgeLabel: "S",
+    badgeTone: "tone-red",
+    availableBalance: 29400,
+    accountTypeLabel: "Cuenta de ahorro",
+    recentMovements: [
+      { id: "s-1", merchant: "Salario", dateLabel: "18 May 2024", amount: 1800, positive: true },
+      { id: "s-2", merchant: "Freelance Project", dateLabel: "14 May 2024", amount: 350, positive: true },
+      { id: "s-3", merchant: "Transferencia a Sofia", dateLabel: "16 May 2024", amount: 200, positive: false }
+    ],
+    infoFields: [
+      { label: "Institucion", value: "Santander" },
+      { label: "Numero de cuenta", value: "•••• 5678" },
+      { label: "CLABE", value: "014 580 9876543210 6" },
+      { label: "Moneda", value: "USD" },
+      { label: "Ultima actualizacion", value: "Hoy, 9:25 AM" }
+    ]
+  },
+  {
+    id: "banorte-card",
+    name: "Tarjeta de Credito",
+    maskedNumber: "•••• 4321",
+    kind: "card",
+    typeLabel: "Tarjeta de credito",
+    typeTone: "tone-purple",
+    institution: "Banorte",
+    balance: -3250.5,
+    statusLabel: "Conectada",
+    statusTone: "success",
+    badgeLabel: "B",
+    badgeTone: "tone-purple",
+    availableBalance: 6749.5,
+    accountTypeLabel: "Credito clasico",
+    recentMovements: [
+      { id: "card-1", merchant: "Netflix", dateLabel: "22 May 2024", amount: 15.99, positive: false },
+      { id: "card-2", merchant: "Uber", dateLabel: "22 May 2024", amount: 8.5, positive: false },
+      { id: "card-3", merchant: "Apple.com/Bill", dateLabel: "20 May 2024", amount: 9.99, positive: false }
+    ],
+    infoFields: [
+      { label: "Institucion", value: "Banorte" },
+      { label: "Numero de cuenta", value: "•••• 4321" },
+      { label: "Limite de credito", value: "$10,000.00" },
+      { label: "Moneda", value: "USD" },
+      { label: "Ultima actualizacion", value: "Hoy, 9:10 AM" }
+    ]
+  },
+  {
+    id: "bbva-gold",
+    name: "Tarjeta Oro",
+    maskedNumber: "•••• 8765",
+    kind: "card",
+    typeLabel: "Tarjeta de credito",
+    typeTone: "tone-purple",
+    institution: "BBVA",
+    balance: -5199.75,
+    statusLabel: "Conectada",
+    statusTone: "success",
+    badgeLabel: "BBVA",
+    badgeTone: "tone-blue",
+    availableBalance: 6800.25,
+    accountTypeLabel: "Tarjeta premium",
+    recentMovements: [
+      { id: "gold-1", merchant: "Airbnb", dateLabel: "20 May 2024", amount: 120, positive: false },
+      { id: "gold-2", merchant: "Amazon.com", dateLabel: "18 May 2024", amount: 45.99, positive: false }
+    ],
+    infoFields: [
+      { label: "Institucion", value: "BBVA" },
+      { label: "Numero de cuenta", value: "•••• 8765" },
+      { label: "Limite de credito", value: "$12,000.00" },
+      { label: "Moneda", value: "USD" },
+      { label: "Ultima actualizacion", value: "Hoy, 8:54 AM" }
+    ]
+  },
+  {
+    id: "cash-wallet",
+    name: "Efectivo",
+    maskedNumber: "Caja principal",
+    kind: "cash",
+    typeLabel: "Efectivo",
+    typeTone: "tone-green",
+    institution: "Manual",
+    balance: 1150,
+    statusLabel: "Manual",
+    statusTone: "muted",
+    badgeLabel: "$",
+    badgeTone: "tone-green",
+    availableBalance: 1150,
+    accountTypeLabel: "Disponible",
+    recentMovements: [
+      { id: "cash-1", merchant: "Restaurante El Faro", dateLabel: "17 May 2024", amount: 45.6, positive: false },
+      { id: "cash-2", merchant: "Supermercado", dateLabel: "18 May 2024", amount: 85.4, positive: false }
+    ],
+    infoFields: [
+      { label: "Institucion", value: "Registro manual" },
+      { label: "Numero de cuenta", value: "Sin numero" },
+      { label: "Moneda", value: "USD" },
+      { label: "Ultima actualizacion", value: "Hoy, 8:10 AM" }
+    ]
+  },
+  {
+    id: "cetes",
+    name: "Inversion CETES",
+    maskedNumber: "•••• 0001",
+    kind: "investment",
+    typeLabel: "Inversion",
+    typeTone: "tone-violet",
+    institution: "CETES",
+    balance: 22500,
+    statusLabel: "Conectada",
+    statusTone: "success",
+    badgeLabel: "C",
+    badgeTone: "tone-violet",
+    availableBalance: 22500,
+    accountTypeLabel: "Renta fija",
+    recentMovements: [
+      { id: "cetes-1", merchant: "Abono de inversion", dateLabel: "19 May 2024", amount: 1200, positive: true }
+    ],
+    infoFields: [
+      { label: "Institucion", value: "CETES" },
+      { label: "Numero de cuenta", value: "•••• 0001" },
+      { label: "Moneda", value: "USD" },
+      { label: "Ultima actualizacion", value: "Hoy, 9:05 AM" }
+    ]
+  },
+  {
+    id: "gbm",
+    name: "GBM+ Inversion",
+    maskedNumber: "•••• 0002",
+    kind: "investment",
+    typeLabel: "Inversion",
+    typeTone: "tone-violet",
+    institution: "GBM+",
+    balance: 15400.25,
+    statusLabel: "Conectada",
+    statusTone: "success",
+    badgeLabel: "G",
+    badgeTone: "tone-cyan",
+    availableBalance: 15400.25,
+    accountTypeLabel: "Portafolio diversificado",
+    recentMovements: [
+      { id: "gbm-1", merchant: "Rendimiento mensual", dateLabel: "20 May 2024", amount: 420.25, positive: true }
+    ],
+    infoFields: [
+      { label: "Institucion", value: "GBM+" },
+      { label: "Numero de cuenta", value: "•••• 0002" },
+      { label: "Moneda", value: "USD" },
+      { label: "Ultima actualizacion", value: "Hoy, 8:58 AM" }
+    ]
+  },
+  {
+    id: "personal-loan",
+    name: "Prestamo Personal",
+    maskedNumber: "•••• 1111",
+    kind: "loan",
+    typeLabel: "Prestamo",
+    typeTone: "tone-gold",
+    institution: "Banamex",
+    balance: -45000,
+    statusLabel: "Conectada",
+    statusTone: "success",
+    badgeLabel: "P",
+    badgeTone: "tone-gold",
+    availableBalance: 0,
+    accountTypeLabel: "Credito personal",
+    recentMovements: [
+      { id: "loan-1", merchant: "Pago de prestamo", dateLabel: "15 May 2024", amount: 600, positive: false }
+    ],
+    infoFields: [
+      { label: "Institucion", value: "Banamex" },
+      { label: "Numero de cuenta", value: "•••• 1111" },
+      { label: "Saldo pendiente", value: "$45,000.00" },
+      { label: "Moneda", value: "USD" },
+      { label: "Ultima actualizacion", value: "Hoy, 8:40 AM" }
+    ]
+  }
+];
+
 const balanceSeries = [8, 14, 13, 26, 24, 38, 40, 48, 50, 55, 46, 44, 53, 51, 56, 58, 62, 78, 82, 95];
 
 const seededCategories: CategoryItemData[] = [
@@ -1167,6 +1434,108 @@ export function buildGoalsPageModel(): GoalsPageModel {
   };
 }
 
+export function buildAccountsPageModel(): AccountsPageModel {
+  const rows = accountsSeed.map((account) => buildAccountRow(account));
+  const balancesByKind = rows.reduce<Record<AccountKind, number>>(
+    (totals, row) => {
+      totals[row.kind] += row.balanceValue;
+      return totals;
+    },
+    { bank: 0, card: 0, cash: 0, investment: 0, loan: 0 }
+  );
+
+  const visibleTotal =
+    balancesByKind.bank +
+    balancesByKind.card +
+    balancesByKind.cash +
+    balancesByKind.investment;
+  const bankCount = rows.filter((row) => row.kind === "bank").length;
+  const cardCount = rows.filter((row) => row.kind === "card").length;
+  const cashCount = rows.filter((row) => row.kind === "cash").length;
+  const investmentCount = rows.filter((row) => row.kind === "investment").length;
+
+  const metrics: AccountMetricData[] = [
+    {
+      id: "total",
+      label: "Saldo total",
+      value: formatMoney(visibleTotal, "USD"),
+      helper: "Actualizado hoy, 9:30 AM",
+      icon: "summary",
+      accent: "#2ed39b"
+    },
+    {
+      id: "banking",
+      label: "Cuentas bancarias",
+      value: formatMoney(balancesByKind.bank, "USD"),
+      helper: `${bankCount} cuentas`,
+      icon: "accounts",
+      accent: "#2f6ef9"
+    },
+    {
+      id: "cards",
+      label: "Tarjetas de credito",
+      value: formatMoney(balancesByKind.card, "USD"),
+      helper: `${cardCount} tarjetas`,
+      icon: "budgets",
+      accent: "#ff596f"
+    },
+    {
+      id: "cash",
+      label: "Efectivo",
+      value: formatMoney(balancesByKind.cash, "USD"),
+      helper: `${cashCount} cuenta`,
+      icon: "bag",
+      accent: "#31d69d"
+    },
+    {
+      id: "investments",
+      label: "Inversiones",
+      value: formatMoney(balancesByKind.investment, "USD"),
+      helper: `${investmentCount} cuentas`,
+      icon: "investments",
+      accent: "#9b79ff"
+    }
+  ];
+
+  const distributionBase = visibleTotal || 1;
+  const distributionConfig: Array<{ id: AccountKind; label: string; color: string }> = [
+    { id: "bank", label: "Cuentas bancarias", color: "#2f6ef9" },
+    { id: "card", label: "Tarjetas de credito", color: "#d85a86" },
+    { id: "cash", label: "Efectivo", color: "#31d69d" },
+    { id: "investment", label: "Inversiones", color: "#8b61ff" },
+    { id: "loan", label: "Prestamos", color: "#ffb347" }
+  ];
+
+  const distribution: AccountDistributionSliceData[] = distributionConfig.map((item) => {
+    const value = balancesByKind[item.id];
+    return {
+      id: item.id,
+      label: item.label,
+      amountLabel: formatMoney(value, "USD"),
+      percentageLabel: `${Math.round((value / distributionBase) * 100)}%`,
+      color: item.color,
+      value
+    };
+  });
+
+  return {
+    dateRangeLabel: "1 - 31 Mayo 2024",
+    tabs: accountTabs,
+    metrics,
+    rows,
+    typeOptions: [
+      "Todos los tipos",
+      "Cuenta bancaria",
+      "Tarjeta de credito",
+      "Efectivo",
+      "Inversion",
+      "Prestamo"
+    ],
+    distribution,
+    connections: accountConnections
+  };
+}
+
 function buildReviewItems(transactions: Transaction[]): ReviewItemData[] {
   return transactions
     .filter((transaction) => transaction.source === "gmail" && transaction.status === "pending")
@@ -1412,6 +1781,58 @@ function buildGoalRow(item: {
     monthlyContributionLabel: formatMoney(item.monthlyContribution, "USD"),
     dueDateLabel: item.dueDateLabel,
     imageTone: item.imageTone
+  };
+}
+
+function buildAccountRow(item: {
+  id: string;
+  name: string;
+  maskedNumber: string;
+  kind: AccountKind;
+  typeLabel: string;
+  typeTone: string;
+  institution: string;
+  balance: number;
+  statusLabel: string;
+  statusTone: AccountRowData["statusTone"];
+  badgeLabel: string;
+  badgeTone: string;
+  availableBalance: number;
+  accountTypeLabel: string;
+  recentMovements: Array<{
+    id: string;
+    merchant: string;
+    dateLabel: string;
+    amount: number;
+    positive: boolean;
+  }>;
+  infoFields: AccountInfoFieldData[];
+}): AccountRowData {
+  return {
+    id: item.id,
+    name: item.name,
+    maskedNumber: item.maskedNumber,
+    kind: item.kind,
+    typeLabel: item.typeLabel,
+    typeTone: item.typeTone,
+    institution: item.institution,
+    balanceValue: item.balance,
+    balanceLabel: formatMoney(item.balance, "USD"),
+    positive: item.balance >= 0,
+    statusLabel: item.statusLabel,
+    statusTone: item.statusTone,
+    badgeLabel: item.badgeLabel,
+    badgeTone: item.badgeTone,
+    availableBalanceLabel: formatMoney(item.availableBalance, "USD"),
+    accountTypeLabel: item.accountTypeLabel,
+    recentMovements: item.recentMovements.map((movement) => ({
+      id: movement.id,
+      merchant: movement.merchant,
+      dateLabel: movement.dateLabel,
+      amountLabel: formatSignedAmount(movement.amount, "USD", movement.positive),
+      positive: movement.positive
+    })),
+    infoFields: item.infoFields
   };
 }
 
