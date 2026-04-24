@@ -1,8 +1,10 @@
-import { IconName } from "./icons";
 import {
+  AppRouteId,
+  AppShellModel,
   BudgetItemData,
   CategoryItemData,
-  DashboardModel,
+  GmailPageModel,
+  GmailRowData,
   GmailStatus,
   GoalItemData,
   InsightCardData,
@@ -10,6 +12,7 @@ import {
   NavItem,
   RecentTransactionData,
   ReviewItemData,
+  SummaryPageModel,
   Transaction
 } from "./types";
 
@@ -22,11 +25,19 @@ export const categories = [
   "Vivienda",
   "Viajes",
   "Ingreso",
+  "Tecnologia",
   "Otros"
 ];
 
+const accountOptions = [
+  "Tarjeta de credito - 4242",
+  "Tarjeta de debito - 5678",
+  "Cuenta bancaria - 1234"
+];
+
 const navItems: NavItem[] = [
-  { id: "summary", label: "Resumen", icon: "home", active: true },
+  { id: "summary", label: "Resumen", icon: "home" },
+  { id: "gmail", label: "Compras (Gmail)", icon: "gmail" },
   { id: "transactions", label: "Transacciones", icon: "transactions" },
   { id: "budgets", label: "Presupuestos", icon: "budgets" },
   { id: "goals", label: "Metas", icon: "goals" },
@@ -217,11 +228,16 @@ const seededCategories: CategoryItemData[] = [
 ];
 
 const previewTransactions: Transaction[] = [
-  createTransaction("preview-amazon", "Amazon.com", 45.99, "Compras", "2026-04-23T09:14:00Z", "pending", "gmail", 0.82, "Pedido #114-3947002-1684236"),
-  createTransaction("preview-uber", "Uber", 8.5, "Transporte", "2026-04-22T23:32:00Z", "pending", "gmail", 0.76, "Viaje del 30 de mayo"),
-  createTransaction("preview-netflix", "Netflix", 15.99, "Entretenimiento", "2026-04-22T08:03:00Z", "pending", "gmail", 0.93, "Suscripcion mensual"),
-  createTransaction("preview-starbucks", "Starbucks", 6.75, "Alimentacion", "2026-04-21T16:42:00Z", "pending", "gmail", 0.71, "Compra en tienda"),
-  createTransaction("preview-airbnb", "Airbnb", 120, "Viajes", "2026-04-20T19:21:00Z", "pending", "gmail", 0.67, "Reserva #HM2K39F"),
+  createTransaction("preview-amazon", "Amazon.com", 45.99, "Compras", "2026-04-23T09:14:00Z", "pending", "gmail", 0.95, "Pedido #114-3947002-1684236"),
+  createTransaction("preview-uber", "Uber", 8.5, "Transporte", "2026-04-22T23:32:00Z", "pending", "gmail", 0.9, "Viaje del 30 de mayo"),
+  createTransaction("preview-netflix", "Netflix", 15.99, "Entretenimiento", "2026-04-22T08:03:00Z", "pending", "gmail", 0.99, "Suscripcion mensual"),
+  createTransaction("preview-starbucks", "Starbucks", 6.75, "Alimentacion", "2026-04-21T16:42:00Z", "pending", "gmail", 0.85, "Compra en tienda"),
+  createTransaction("preview-airbnb", "Airbnb", 120, "Viajes", "2026-04-20T19:21:00Z", "pending", "gmail", 0.92, "Reserva #HM2K39F"),
+  createTransaction("preview-apple", "Apple.com/Bill", 9.99, "Tecnologia", "2026-04-20T18:15:00Z", "pending", "gmail", 0.88, "Factura mensual"),
+  createTransaction("preview-walmart", "Walmart", 72.4, "Compras", "2026-04-19T15:11:00Z", "pending", "gmail", 0.8, "Compra en linea"),
+  createTransaction("preview-spotify", "Spotify", 4.99, "Entretenimiento", "2026-04-19T09:09:00Z", "pending", "gmail", 0.98, "Suscripcion mensual"),
+  createTransaction("preview-amazon-old", "Amazon.com", 39.9, "Compras", "2026-04-12T09:14:00Z", "approved", "gmail", 0.96, "Pedido #114-1111111-1234567"),
+  createTransaction("preview-gym-ignored", "Gym Pro", 25, "Salud", "2026-04-10T12:00:00Z", "ignored", "gmail", 0.74, "Cobro no recurrente"),
   createTransaction("preview-supermarket", "Supermercado", 85.4, "Alimentacion", "2026-04-19T14:35:00Z", "approved", "manual", 1, "Compra registrada"),
   createTransaction("preview-salary", "Salario", 1800, "Ingreso", "2026-04-18T09:20:00Z", "approved", "manual", 1, "Deposito mensual"),
   createTransaction("preview-freelance", "Freelance Project", 350, "Ingreso", "2026-04-17T13:10:00Z", "approved", "manual", 1, "Pago recibido"),
@@ -233,19 +249,39 @@ export function createPreviewTransactions() {
   return previewTransactions.map((transaction) => ({ ...transaction }));
 }
 
-export function buildDashboardModel(
-  transactions: Transaction[],
+export function buildAppShellModel(
   gmailStatus: GmailStatus | null,
+  currentRoute: AppRouteId,
   isPreview: boolean
-): DashboardModel {
+): AppShellModel {
   const displayName = gmailStatus?.name || "Samuel";
   const displayEmail = gmailStatus?.email || "samuel@gmail.com";
 
   return {
     userName: getFirstName(displayName),
+    dateRangeLabel: "1 - 31 Mayo 2024",
+    navItems: navItems.map((item) => ({ ...item, id: item.id === currentRoute ? item.id : item.id })),
+    profile: {
+      name: displayName,
+      email: displayEmail
+    },
+    connectedLabel: "Gmail",
+    connectedHelper: getConnectedHelper(gmailStatus),
+    connectionState: getConnectionState(gmailStatus),
+    isPreview
+  };
+}
+
+export function buildSummaryModel(
+  transactions: Transaction[],
+  gmailStatus: GmailStatus | null
+): SummaryPageModel {
+  const displayName = gmailStatus?.name || "Samuel";
+
+  return {
+    userName: getFirstName(displayName),
     subtitle: "Aqui tienes el resumen de tus finanzas",
     dateRangeLabel: "1 - 31 Mayo 2024",
-    navItems,
     metrics: metricCards,
     reviewItems: buildReviewItems(transactions),
     recentTransactions: buildRecentTransactions(transactions),
@@ -253,47 +289,60 @@ export function buildDashboardModel(
     categories: buildCategoryBreakdown(transactions),
     balanceSeries,
     goals: goalItems,
-    insights: insightItems,
-    profile: {
-      name: displayName,
-      email: displayEmail
-    },
-    connectedLabel: getConnectedLabel(gmailStatus),
-    connectedHelper: getConnectedHelper(gmailStatus),
-    connectionState: getConnectionState(gmailStatus),
-    isPreview
+    insights: insightItems
+  };
+}
+
+export function buildGmailPageModel(transactions: Transaction[]): GmailPageModel {
+  const gmailTransactions = transactions
+    .filter((transaction) => transaction.source === "gmail")
+    .sort((left, right) => new Date(right.purchasedAt).getTime() - new Date(left.purchasedAt).getTime());
+  const rows = gmailTransactions.map((transaction) => buildGmailRow(transaction));
+
+  return {
+    dateRangeLabel: "1 - 31 Mayo 2024",
+    tabs: [
+      { id: "pending", label: "Pendientes", count: rows.filter((row) => row.status === "pending").length },
+      { id: "registered", label: "Registradas", count: rows.filter((row) => row.status === "approved").length },
+      { id: "ignored", label: "Ignoradas", count: rows.filter((row) => row.status === "ignored").length },
+      { id: "rules", label: "Reglas", count: rows.filter((row) => row.isAutomatic || row.createRuleSuggested).length }
+    ],
+    rows,
+    pendingCount: rows.filter((row) => row.status === "pending").length,
+    categoryOptions: ["Todas las categorias", ...categories],
+    accountOptions: ["Todas las cuentas", ...accountOptions]
   };
 }
 
 function buildReviewItems(transactions: Transaction[]): ReviewItemData[] {
   return transactions
     .filter((transaction) => transaction.source === "gmail" && transaction.status === "pending")
-    .sort((left, right) => sortByDate(right.purchasedAt, left.purchasedAt))
+    .sort((left, right) => new Date(right.purchasedAt).getTime() - new Date(left.purchasedAt).getTime())
     .slice(0, 5)
     .map((transaction) => ({
       id: transaction.id,
       merchant: transaction.merchant,
       subtitle: transaction.emailSubject ?? "Compra detectada en Gmail",
       timeLabel: formatRelativeDate(transaction.purchasedAt),
-      amountLabel: formatMoney(transaction.amount, transaction.currency),
+      amountLabel: formatSignedAmount(transaction.amount, transaction.currency, false),
       category: transaction.category,
       confidence: transaction.confidence,
-      actionLabel: transaction.confidence >= 0.9 ? "Automatico" : "Registrar",
-      actionTone: transaction.confidence >= 0.9 ? "success" : "primary"
+      actionLabel: transaction.confidence >= 0.95 ? "Automatico" : "Registrar",
+      actionTone: transaction.confidence >= 0.95 ? "success" : "primary"
     }));
 }
 
 function buildRecentTransactions(transactions: Transaction[]): RecentTransactionData[] {
   return transactions
     .filter((transaction) => transaction.status !== "pending")
-    .sort((left, right) => sortByDate(right.purchasedAt, left.purchasedAt))
+    .sort((left, right) => new Date(right.purchasedAt).getTime() - new Date(left.purchasedAt).getTime())
     .slice(0, 7)
     .map((transaction) => ({
       id: transaction.id,
       merchant: transaction.merchant,
       dateLabel: formatTransactionDate(transaction.purchasedAt),
       category: transaction.category,
-      amountLabel: `${isIncome(transaction) ? "+" : "-"}${formatMoney(transaction.amount, transaction.currency)}`,
+      amountLabel: formatSignedAmount(transaction.amount, transaction.currency, isIncome(transaction)),
       positive: isIncome(transaction)
     }));
 }
@@ -332,6 +381,43 @@ function buildCategoryBreakdown(transactions: Transaction[]): CategoryItemData[]
     }));
 }
 
+function buildGmailRow(transaction: Transaction): GmailRowData {
+  const confidencePercent = Math.round(transaction.confidence * 100);
+  const accountLabel = getSuggestedAccount(transaction);
+  const products = getSuggestedProducts(transaction.merchant, transaction.amount, transaction.currency);
+
+  return {
+    id: transaction.id,
+    merchant: transaction.merchant,
+    subtitle: transaction.emailSubject ?? "Compra detectada en Gmail",
+    emailFrom: transaction.emailFrom ?? getDefaultEmailFrom(transaction.merchant),
+    dateLabel: formatDateWithTime(transaction.purchasedAt),
+    amountLabel: formatSignedAmount(transaction.amount, transaction.currency, false),
+    category: transaction.category,
+    categoryTone: getCategoryTone(transaction.category),
+    accountLabel,
+    confidencePercent,
+    confidenceTone:
+      confidencePercent >= 90 ? "high" : confidencePercent >= 80 ? "medium" : "low",
+    status: transaction.status,
+    statusLabel: getStatusLabel(transaction.status),
+    isAutomatic: transaction.confidence >= 95 / 100,
+    createRuleSuggested: transaction.confidence >= 90 / 100,
+    detail: {
+      datetimeLabel: formatFullDate(transaction.purchasedAt),
+      totalLabel: `${formatSignedAmount(transaction.amount, transaction.currency, false)} ${transaction.currency}`.replace("--", "-"),
+      fields: [
+        { label: "Comercio", value: transaction.merchant },
+        { label: "Fecha", value: formatFullDate(transaction.purchasedAt) },
+        { label: "Metodo de pago", value: accountLabel },
+        { label: "Numero de pedido", value: transaction.emailSubject ?? "Sin numero visible" },
+        { label: "Correo origen", value: transaction.emailFrom ?? getDefaultEmailFrom(transaction.merchant) }
+      ],
+      products
+    }
+  };
+}
+
 function createTransaction(
   id: string,
   merchant: string,
@@ -354,19 +440,84 @@ function createTransaction(
     confidence,
     currency: "USD",
     emailSubject,
+    emailFrom: getDefaultEmailFrom(merchant),
     createdAt: purchasedAt,
     updatedAt: purchasedAt
   };
 }
 
-function isIncome(transaction: Transaction) {
-  return transaction.category === "Ingreso";
+function getSuggestedAccount(transaction: Transaction) {
+  const merchant = transaction.merchant.toLowerCase();
+
+  if (merchant.includes("uber") || merchant.includes("walmart") || merchant.includes("spotify")) {
+    return "Cuenta bancaria - 1234";
+  }
+
+  if (merchant.includes("starbucks")) {
+    return "Tarjeta de debito - 5678";
+  }
+
+  return "Tarjeta de credito - 4242";
 }
 
-function getConnectedLabel(gmailStatus: GmailStatus | null) {
-  if (!gmailStatus?.configured) return "Gmail";
-  if (!gmailStatus.connected) return "Gmail";
-  return "Gmail";
+function getSuggestedProducts(merchant: string, amount: number, currency: string) {
+  const label = merchant.toLowerCase();
+
+  if (label.includes("amazon")) {
+    return [
+      { id: "p1", name: "Audifonos inalambricos", amountLabel: formatMoney(29.99, currency) },
+      { id: "p2", name: "Cable USB-C", amountLabel: formatMoney(amount - 29.99, currency) }
+    ];
+  }
+
+  if (label.includes("uber")) {
+    return [{ id: "p1", name: "Viaje urbano", amountLabel: formatMoney(amount, currency) }];
+  }
+
+  if (label.includes("netflix") || label.includes("spotify")) {
+    return [{ id: "p1", name: "Suscripcion mensual", amountLabel: formatMoney(amount, currency) }];
+  }
+
+  if (label.includes("starbucks")) {
+    return [
+      { id: "p1", name: "Cafe latte", amountLabel: formatMoney(4.5, currency) },
+      { id: "p2", name: "Pan dulce", amountLabel: formatMoney(amount - 4.5, currency) }
+    ];
+  }
+
+  return [{ id: "p1", name: "Cargo detectado", amountLabel: formatMoney(amount, currency) }];
+}
+
+function getCategoryTone(category: string) {
+  const toneMap: Record<string, string> = {
+    Compras: "tone-purple",
+    Alimentacion: "tone-green",
+    Transporte: "tone-blue",
+    Entretenimiento: "tone-red",
+    Salud: "tone-pink",
+    Vivienda: "tone-gold",
+    Viajes: "tone-violet",
+    Tecnologia: "tone-cyan",
+    Ingreso: "tone-green",
+    Otros: "tone-muted"
+  };
+
+  return toneMap[category] ?? "tone-muted";
+}
+
+function getDefaultEmailFrom(merchant: string) {
+  const label = merchant.toLowerCase();
+
+  if (label.includes("amazon")) return "no-reply@amazon.com";
+  if (label.includes("uber")) return "uber.receipts@uber.com";
+  if (label.includes("netflix")) return "info@account.netflix.com";
+  if (label.includes("spotify")) return "no-reply@spotify.com";
+  if (label.includes("apple")) return "do_not_reply@apple.com";
+  return `no-reply@${label.replace(/[^a-z0-9]/g, "") || "merchant"}.com`;
+}
+
+function isIncome(transaction: Transaction) {
+  return transaction.category === "Ingreso";
 }
 
 function getConnectedHelper(gmailStatus: GmailStatus | null) {
@@ -375,33 +526,52 @@ function getConnectedHelper(gmailStatus: GmailStatus | null) {
   return "Monitoreando correos en tiempo real";
 }
 
-function getConnectionState(gmailStatus: GmailStatus | null): DashboardModel["connectionState"] {
+function getConnectionState(gmailStatus: GmailStatus | null): AppShellModel["connectionState"] {
   if (!gmailStatus?.configured) return "setup";
   if (!gmailStatus.connected) return "ready";
   return "active";
 }
 
-function sortByDate(left: string, right: string) {
-  return new Date(left).getTime() - new Date(right).getTime();
+function getStatusLabel(status: Transaction["status"]) {
+  if (status === "approved") return "Registrada";
+  if (status === "ignored") return "Ignorada";
+  return "Pendiente";
 }
 
 function formatRelativeDate(value: string) {
-  const date = new Date(value);
   return new Intl.DateTimeFormat("es-SV", {
     day: "2-digit",
     month: "short",
     hour: "numeric",
     minute: "2-digit"
-  }).format(date);
+  }).format(new Date(value));
 }
 
 function formatTransactionDate(value: string) {
-  const date = new Date(value);
   return new Intl.DateTimeFormat("es-SV", {
     day: "2-digit",
     month: "short",
     year: "numeric"
-  }).format(date);
+  }).format(new Date(value));
+}
+
+function formatDateWithTime(value: string) {
+  return new Intl.DateTimeFormat("es-SV", {
+    day: "2-digit",
+    month: "short",
+    hour: "numeric",
+    minute: "2-digit"
+  }).format(new Date(value));
+}
+
+function formatFullDate(value: string) {
+  return new Intl.DateTimeFormat("es-SV", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit"
+  }).format(new Date(value));
 }
 
 function formatMoney(value: number, currency: string) {
@@ -410,6 +580,11 @@ function formatMoney(value: number, currency: string) {
     currency,
     maximumFractionDigits: 2
   }).format(value);
+}
+
+function formatSignedAmount(value: number, currency: string, positive: boolean) {
+  const formatted = formatMoney(value, currency);
+  return `${positive ? "+" : "-"}${formatted}`;
 }
 
 function getFirstName(name: string) {

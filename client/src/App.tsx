@@ -1,12 +1,23 @@
 import { useEffect, useMemo, useState } from "react";
-import { DashboardPage } from "./components/DashboardPage";
+import { AppLayout } from "./components/AppLayout";
+import { GmailPage } from "./components/GmailPage";
 import { LoginScreen } from "./components/LoginScreen";
-import { buildDashboardModel, createPreviewTransactions } from "./dashboardData";
-import { GmailStatus, Transaction } from "./types";
+import { PlaceholderPage } from "./components/PlaceholderPage";
+import { SummaryPage } from "./components/SummaryPage";
+import {
+  buildAppShellModel,
+  buildGmailPageModel,
+  buildSummaryModel,
+  createPreviewTransactions
+} from "./dashboardData";
+import { AppRouteId, GmailStatus, Transaction } from "./types";
+
+const demoSessionKey = "finova-demo-session";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authResolved, setAuthResolved] = useState(false);
+  const [currentRoute, setCurrentRoute] = useState<AppRouteId>("summary");
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [previewTransactions, setPreviewTransactions] = useState<Transaction[]>(
     () => createPreviewTransactions()
@@ -22,9 +33,17 @@ function App() {
 
   const usePreviewMode = !loading && transactions.length === 0 && !gmailStatus?.connected;
   const displayTransactions = usePreviewMode ? previewTransactions : transactions;
-  const dashboardModel = useMemo(
-    () => buildDashboardModel(displayTransactions, gmailStatus, usePreviewMode),
-    [displayTransactions, gmailStatus, usePreviewMode]
+  const shellModel = useMemo(
+    () => buildAppShellModel(gmailStatus, currentRoute, usePreviewMode),
+    [currentRoute, gmailStatus, usePreviewMode]
+  );
+  const summaryModel = useMemo(
+    () => buildSummaryModel(displayTransactions, gmailStatus),
+    [displayTransactions, gmailStatus]
+  );
+  const gmailPageModel = useMemo(
+    () => buildGmailPageModel(displayTransactions),
+    [displayTransactions]
   );
 
   async function loadDashboard() {
@@ -53,9 +72,10 @@ function App() {
     try {
       const statusResponse = await fetch("/api/gmail/status");
       const statusPayload = await statusResponse.json();
+      const demoSession = localStorage.getItem(demoSessionKey) === "active";
 
       setGmailStatus(statusPayload);
-      setIsAuthenticated(Boolean(statusPayload.connected));
+      setIsAuthenticated(Boolean(statusPayload.connected || demoSession));
 
       const search = new URLSearchParams(window.location.search);
       const gmailParam = search.get("gmail");
@@ -99,6 +119,13 @@ function App() {
         requestError instanceof Error ? requestError.message : "No se pudo abrir Gmail."
       );
     }
+  }
+
+  function enterDemoMode() {
+    localStorage.setItem(demoSessionKey, "active");
+    setIsAuthenticated(true);
+    setError("");
+    setCurrentRoute("summary");
   }
 
   async function syncGmail() {
@@ -175,14 +202,25 @@ function App() {
     await updateTransaction(id, { category });
   }
 
+  async function handleApproveMany(ids: string[]) {
+    for (const id of ids) {
+      await updateTransaction(id, { status: "approved" });
+    }
+  }
+
   if (!authResolved) {
-    return <main className="login-page"><section className="login-card loading-card">Cargando...</section></main>;
+    return (
+      <main className="login-page">
+        <section className="login-card loading-card">Cargando...</section>
+      </main>
+    );
   }
 
   if (!isAuthenticated) {
     return (
       <LoginScreen
         onLogin={connectGmail}
+        onEnterDemo={enterDemoMode}
         googleConfigured={Boolean(gmailStatus?.configured)}
         error={error}
       />
@@ -190,18 +228,39 @@ function App() {
   }
 
   return (
-    <DashboardPage
-      model={dashboardModel}
+    <AppLayout
+      shell={shellModel}
+      currentRoute={currentRoute}
       gmailStatus={gmailStatus}
-      loading={loading}
       syncing={syncing}
-      error={error}
+      onNavigate={setCurrentRoute}
       onConnectGmail={connectGmail}
       onSyncGmail={syncGmail}
-      onApproveDetected={handleApproveDetected}
-      onIgnoreDetected={handleIgnoreDetected}
-      onCategoryChange={handleCategoryChange}
-    />
+    >
+      {error ? <div className="dashboard-alert">{error}</div> : null}
+      {currentRoute === "summary" ? (
+        <SummaryPage
+          model={summaryModel}
+          loading={loading}
+          onSyncGmail={syncGmail}
+          onApproveDetected={handleApproveDetected}
+          onIgnoreDetected={handleIgnoreDetected}
+          onCategoryChange={handleCategoryChange}
+          onOpenGmailPage={() => setCurrentRoute("gmail")}
+        />
+      ) : currentRoute === "gmail" ? (
+        <GmailPage
+          model={gmailPageModel}
+          loading={loading}
+          onApprove={handleApproveDetected}
+          onIgnore={handleIgnoreDetected}
+          onApproveMany={handleApproveMany}
+          onCategoryChange={handleCategoryChange}
+        />
+      ) : (
+        <PlaceholderPage route={currentRoute} />
+      )}
+    </AppLayout>
   );
 }
 

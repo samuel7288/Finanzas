@@ -1,5 +1,17 @@
 export type TransactionStatus = "pending" | "approved" | "ignored";
 export type TransactionSource = "gmail" | "manual";
+export type AppRouteId =
+  | "summary"
+  | "gmail"
+  | "transactions"
+  | "budgets"
+  | "goals"
+  | "reports"
+  | "accounts"
+  | "investments"
+  | "alerts"
+  | "settings";
+export type GmailTabId = "pending" | "registered" | "ignored" | "rules";
 
 export interface Transaction {
   id: string;
@@ -30,10 +42,9 @@ export interface GmailStatus {
 }
 
 export interface NavItem {
-  id: string;
+  id: AppRouteId;
   label: string;
   icon: string;
-  active?: boolean;
 }
 
 export interface MetricCardData {
@@ -110,11 +121,21 @@ export interface SidebarProfileData {
   email: string;
 }
 
-export interface DashboardModel {
+export interface AppShellModel {
+  userName: string;
+  dateRangeLabel: string;
+  navItems: NavItem[];
+  profile: SidebarProfileData;
+  connectedLabel: string;
+  connectedHelper: string;
+  connectionState: "active" | "ready" | "setup";
+  isPreview: boolean;
+}
+
+export interface SummaryPageModel {
   userName: string;
   subtitle: string;
   dateRangeLabel: string;
-  navItems: NavItem[];
   metrics: MetricCardData[];
   reviewItems: ReviewItemData[];
   recentTransactions: RecentTransactionData[];
@@ -123,9 +144,54 @@ export interface DashboardModel {
   balanceSeries: number[];
   goals: GoalItemData[];
   insights: InsightCardData[];
-  profile: SidebarProfileData;
-  connectedLabel: string;
-  connectedHelper: string;
-  connectionState: "active" | "ready" | "setup";
-  isPreview: boolean;
+}
+
+export interface GmailTabData {
+  id: GmailTabId;
+  label: string;
+  count: number;
+}
+
+export interface GmailDetailField {
+  label: string;
+  value: string;
+}
+
+export interface GmailProductData {
+  id: string;
+  name: string;
+  amountLabel: string;
+}
+
+export interface GmailRowData {
+  id: string;
+  merchant: string;
+  subtitle: string;
+  emailFrom: string;
+  dateLabel: string;
+  amountLabel: string;
+  category: string;
+  categoryTone: string;
+  accountLabel: string;
+  confidencePercent: number;
+  confidenceTone: "high" | "medium" | "low";
+  status: TransactionStatus;
+  statusLabel: string;
+  isAutomatic: boolean;
+  createRuleSuggested: boolean;
+  detail: {
+    datetimeLabel: string;
+    totalLabel: string;
+    fields: GmailDetailField[];
+    products: GmailProductData[];
+  };
+}
+
+export interface GmailPageModel {
+  dateRangeLabel: string;
+  tabs: GmailTabData[];
+  rows: GmailRowData[];
+  pendingCount: number;
+  categoryOptions: string[];
+  accountOptions: string[];
 }

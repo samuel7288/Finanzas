@@ -3,10 +3,12 @@ import { BrandLogo } from "../icons";
 
 export function LoginScreen({
   onLogin,
+  onEnterDemo,
   googleConfigured,
   error
 }: {
   onLogin: () => void;
+  onEnterDemo: () => void;
   googleConfigured: boolean;
   error?: string;
 }) {
@@ -58,10 +60,14 @@ export function LoginScreen({
             </span>
             {googleConfigured ? "Continuar con Google" : "Faltan credenciales Google"}
           </button>
+          <button type="button" className="demo-access-button" onClick={onEnterDemo}>
+            Entrar en modo demo
+          </button>
         </div>
 
         <p className="signup-copy">
           La misma cuenta te sirve para iniciar sesion y leer tus compras desde Gmail.
+          Mientras tanto, el modo demo te deja recorrer toda la app.
         </p>
       </section>
     </main>
